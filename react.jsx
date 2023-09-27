@@ -7,6 +7,8 @@
 //to start vite after run
 //npm run dev > will start vite
 
+import { render } from "react-dom";
+
 //--------------------- 9. THINKING IN COMPONENTS----------------//
 //https://courses.webdevsimplified.com/view/courses/react-simplified-beginner/1764768-basic-components/5598791-09-thinking-in-components
 
@@ -64,16 +66,122 @@ return (
 
 //-------------------------- 11. CREATING COMPONENTS --------------------//
 //components should start with capital letter and be CamelCase
-
 /*function component 
-1.create a new File, name the file the same as component name
-2. function ComponentName () {
-  return ()
+1.create a new File,recommend to name the file the same as component name
+2. code on the file: 
+export function TodoList() {
+  return (
+    <ul>
+      <li>item 1</li>
+      <li>item 2</li>
+      <li>item 3</li>
+      <li>item 4</li>
+    </ul>
+  );
 }
-3. need to export code from that file and import to the main one
-4. put on the code as < ComponentName /> 
+3. need to export code from that file and import to the main one using import 
+4. how to use component code on the main file 
+ return (
+      <TodoList />
+  )*/
 
+//exercise create a component that render h1 with your name in it
+//code on component file MyName
+// export function MyName() {
+//   return <h1>Leticia Azevedo</h1>;
+// }
+// //code on main file
+// import { MyName } from "./MyName";
+// function App() {
+//   return <MyName />;
+// }
 
+/*class component works the same as fucntion component on main file
+difference is on the component file
+//code on component file 
+import React from "react";
+export class TodoListClass extends React.Component {
+  render() {
+    return <h1>Leticia Azevedo </h1>;
+  }
+}
 */
 
-//and class component
+//TIP: components can be defined on the same file but for better practice create a new file
+
+//-------------------------- 11. PROPS > PROPERTIES --------------------//
+//Example of property
+//creating properties on the imported code
+function App() {
+  return (
+    <div>
+      {/*this way can use the property component twice and give different info*/}
+      <MyName name="leti" age={26} /> {/*Leti 26*/}
+      <MyName name="luca" age={31} /> {/*Luca 31*/}
+    </div>
+  );
+}
+//to access these properties, the function needs a parameter and we access the parameter as we access object in javascript
+export function MyName(props) {
+  return (
+    <h1>
+      {props.name} {props.age}
+    </h1>
+  );
+}
+//for the property that goes into the function, it can be destructed to avoid writing props.something all the time
+//can also pass a boolean , if no value will be set to true (?)
+export function MyName({ name, age, isProgrammer }) {
+  {
+    console.log("Is programmer?", isProgrammer);
+  } //will return true or false whatever we put on main file code
+  return (
+    <h1>
+      {name} {age}
+    </h1>
+  );
+}
+//how to pass along a child
+//on the component file  (HAS TO BE children, other prop name won't work)
+export function MyName({ children }) {
+  return <h1>{children}</h1>;
+}
+//main file
+function App() {
+  return (
+    <div>
+      <MyName>{"Leticia Azevedo"}</MyName>
+    </div>
+  );
+}
+
+//EXERCISE - create TodoListItem Componenet
+//props: will be children with name, isComplete boolean
+//render out checkbox, (checked if complete)
+//label will be (children value)
+export function TodoList({ children, isComplete }) {
+  return (
+    <div>
+      <label>{children}</label>
+      <input type="checkbox" checked={isComplete}></input>
+    </div>
+  );
+}
+//main file
+function App() {
+  return (
+    <div>
+      <TodoList isComplete>todo item 1</TodoList>
+      <TodoList isComplete={false}>todo item 2</TodoList>
+    </div>
+  );
+}
+//with class components , the differences
+// render() {
+//   return (
+//     <div>
+//       <label>{this.props.children}</label> //this.props. will access the
+//       <input type="checkbox" checked={this.props.isComplete}></input>
+//     </div>
+//   );
+// }
