@@ -18,7 +18,7 @@ import { render } from "react-dom";
 //DIFFERENCES BETWEEN HTML AND JSX SYNTAX
 //1. everything will be CamelCase instead of using-dash, unless dealing with some data attributes or aria(?)
 
-// 2. the word class is used for actually creating a class, we cant use the class keywork need to use ClassName instead
+// 2. the word class is used for actually creating a class, we cant use the class keyword need to use ClassName instead
 function App() {
   return <h1 className="hi"> Hello World </h1>;
 }
@@ -29,7 +29,7 @@ function App() {
 //3. anything that is not a string will have to be in curly braces
 //example css style are passed as object
 <h1 style={{ background: "red" }}>hello World</h1>;
-//4. whenever you have bracea inside jsx will execute javascript code
+//4. whenever you have curly brackets inside jsx will execute javascript code
 return <h1>{2 + 4}</h1>; //6
 //in html some elements does't need a closing tag, in jsx every tag needs to be closed
 
@@ -60,7 +60,7 @@ return (
     {myInput}
   </div>
 );
-//if you're passing more than one element like case above with label/input it HAS to be wrapped on a <div> or You can wrap multiple children in <></> to avoid extra nodes like divs.
+//if you're passing more than one element like case above with label/input it HAS to be wrapped on smt like a <div> or You can wrap multiple children in <></> to avoid extra nodes like divs.
 //things you can return from a component string, number, array
 // undefined, null and false inside { } wont return anything on jsx, can be placeholder
 
@@ -129,6 +129,7 @@ export function MyName(props) {
     </h1>
   );
 }
+
 //for the property that goes into the function, it can be destructed to avoid writing props.something all the time
 //can also pass a boolean , if no value will be set to true (?)
 export function MyName({ name, age, isProgrammer }) {
@@ -141,6 +142,7 @@ export function MyName({ name, age, isProgrammer }) {
     </h1>
   );
 }
+
 //how to pass along a child
 //on the component file  (HAS TO BE children, other prop name won't work)
 export function MyName({ children }) {
@@ -168,7 +170,7 @@ export function TodoList({ children, isComplete }) {
   );
 }
 //main file
-function App() {
+function NewApp() {
   return (
     <div>
       <TodoList isComplete>todo item 1</TodoList>
@@ -185,3 +187,27 @@ function App() {
 //     </div>
 //   );
 // }
+
+//-------------------------- 13. DECLARATIVE VS IMPERATIVE --------------------//
+/*imperative --> focused on HOW it is to be done; 
+declarative --> specifying what you want.
+A good analogy is imagine you go to a restaurant with your partner. 
+An imperative interaction with the waiter would be "I see that table over there by the Fish tank is empty. 
+My girlfriend and I are going to walk towards the bar, take a right at the bathroom, walk past the two tables, then sit down",
+declarative interaction "Table for 2 please".
+ 
+HTML and CSS are also declarative software --> you're not concerned with how the web browser parses elements, 
+or how exactly elements are being styled under the hood, you're just expressing what element you want on the page
+or what style to add to an element. React works in the same manner. 
+*/
+
+//-------------------------- 14. IMPORTING NON-JS FILE --------------------//
+//how to import thing that aren't normal javascript or jsx
+//on the main file of your code (App.jsx) can use keyword
+
+//impoting CSS
+// import "./styles.css"  (it won't be imported on html head)
+//importing Json
+//import user from "./user.json" (then need to declare in order to use {JSON.stringfy{user}}  )
+//importing image
+//import img from "./NameOfFile.png"

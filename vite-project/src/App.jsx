@@ -7,6 +7,7 @@ function App() {
   return (
     <div>
       <TodoList isComplete>Leticia Azevedo</TodoList>
+      <TodoList isComplete>Leticia Azevedo</TodoList>
       <TodoList isComplete={false}>Fernanda Santos</TodoList>
     </div>
   );
