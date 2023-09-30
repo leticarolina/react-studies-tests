@@ -211,3 +211,99 @@ or what style to add to an element. React works in the same manner.
 //import user from "./user.json" (then need to declare in order to use {JSON.stringfy{user}}  )
 //importing image
 //import img from "./NameOfFile.png"
+
+//-------------------------- 17. useState Hookaa --------------------//
+//state is data that can change over time, will be updated, and whenever that data changes you wanna re-render your component
+//hooks will always be placed first on the code above the return
+
+//breaking out a useState
+function App() {
+  //declaring the state as a varible but name of the variable is like an array
+  //setAge index we will use to update the age value, it can be any variable name but standart start with set
+  const [age, setAge] = useState(26); //default value to be 26
+  console.log("current", age); // current 26
+  //function to update the value, setting setAge to 27, will override default value
+  function newAge() {
+    setAge(27);
+  }
+  //onclick age will turn to 27, when update state variable it reruns the entire componenet with the new value set
+  return <h2 onClick={newAge}> Next age {age} </h2>; //Next age 27
+}
+
+//more complex things of useState
+
+//if you a pass a function to useState instead of a value, it gets the value of the function and then never run it again
+function App() {
+  const [age, setAge] = useState(() => {
+    return 26;
+  });
+}
+//or
+function slowGetter() {
+  console.log("slow code"); //this code will run only once since it's slow
+  return 26;
+}
+const [age, setAge] = useState(slowGetter); //if using slowGetter() it will call the function every time it re-renders
+
+//changing 2 values at the same time using useState
+function App() {
+  const [age, setAge] = useState(26);
+  const [name, setName] = useState("leti ");
+
+  function newAge() {
+    setAge(27);
+    setName("azevedo ");
+  }
+
+  return (
+    //onclick will change to azevedo 27
+    <h2 onClick={newAge}>
+      {" "}
+      {name} {age}{" "}
+    </h2>
+  );
+}
+
+//if you are setting a value that depends on the previous or the current value of the state
+// need to use the function version of set state
+//in case you don't care or new value is not dependent on the prev value, can set normally without fucntion
+function newAge() {
+  //this won't work
+  setAge(age + 1);
+  setAge(age + 1);
+  //values will have to be set as functions
+  setAge((current) => {
+    return current + 1;
+  });
+  setAge((current) => {
+    return current + 1;
+  });
+}
+
+//EXERCISE: create component called Counter
+//have a state for a counter that starts with 0
+//when you click the number increments by 1
+//this works all on same file
+function App() {
+  const [counter, setCounter] = useState(0);
+  function addCounter() {
+    setCounter(counter + 1);
+  }
+  return <h1 onClick={addCounter}>{counter}</h1>;
+}
+//creating a separate file for the component
+import { useState } from "react";
+export function AddCounter() {
+  const [counter, setCounter] = useState(0);
+
+  function handleClick() {
+    setCounter((current) => current + 1);
+  }
+  return <h1 onClick={handleClick}>{counter}</h1>;
+}
+
+//original file
+import { AddCounter } from "./AddCounter";
+function App() {
+  return <AddCounter />;
+}
