@@ -212,7 +212,7 @@ or what style to add to an element. React works in the same manner.
 //importing image
 //import img from "./NameOfFile.png"
 
-//-------------------------- 17. useState Hookaa --------------------//
+//-------------------------- 17. useState Hooks --------------------//
 //state is data that can change over time, will be updated, and whenever that data changes you wanna re-render your component
 //hooks will always be placed first on the code above the return
 
@@ -266,7 +266,8 @@ function App() {
 
 //if you are setting a value that depends on the previous or the current value of the state
 // need to use the function version of set state
-//in case you don't care or new value is not dependent on the prev value, can set normally without fucntion
+// in other words: anytime you need the current state to update the new state you should always use the function version.
+//However, in case you don't care or new value is not dependent on the prev value, can set normally without fucntion
 function newAge() {
   //this won't work
   setAge(age + 1);
@@ -307,3 +308,15 @@ import { AddCounter } from "./AddCounter";
 function App() {
   return <AddCounter />;
 }
+
+//-------------------------- 19. INPUT EVENT LISTENERS --------------------//
+//event listeners on the input
+//need to always use  onChange={(e) => setName(e.target.value)} so react has control of the input
+//onChange event fires after you type any caracter in the input
+function App() {
+  const [name, setName] = useState("Leticia");
+  return (
+    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+  );
+}
+//if you wsnt to skip code "onChange" can set a defaultValue, however it won't be updated any state variable (react has no control)
