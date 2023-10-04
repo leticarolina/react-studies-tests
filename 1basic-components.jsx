@@ -108,6 +108,7 @@ export class TodoListClass extends React.Component {
 */
 
 //TIP: components can be defined on the same file but for better practice create a new file
+//TIP: when doing export the import will have curly brackets, when doing export deafult the import has no curly brackets
 
 //-------------------------- 11. PROPS > PROPERTIES --------------------//
 //Example of property
@@ -188,6 +189,7 @@ function NewApp() {
 //   );
 // }
 
+//logic behind props: anything you want to change can be defined on the props, and anything you want tokeep the same can be defined on the component
 //-------------------------- 13. DECLARATIVE VS IMPERATIVE --------------------//
 /*imperative --> focused on HOW it is to be done; 
 declarative --> specifying what you want.
@@ -238,7 +240,7 @@ function App() {
     return 26;
   });
 }
-//or
+//or pass the function, not call it with ()
 function slowGetter() {
   console.log("slow code"); //this code will run only once since it's slow
   return 26;
@@ -320,3 +322,96 @@ function App() {
   );
 }
 //if you wsnt to skip code "onChange" can set a defaultValue, however it won't be updated any state variable (react has no control)
+
+//-------------------------- 24.COMPONENT LIFECYCLE --------------------//
+//Terminology
+//1.mountain = rerender>unmountain
+
+//-------------------------- 25.useEffect Hook --------------------//
+//useEffect takes a function and will run every time the App rerenders if only function declared
+function App() {
+  useEffect(() => {
+    console.log("here");
+  });
+} //every refresh logs "here"
+
+//second parameter of function useEffect takes is an array with value [name],anytime values in the array changes then it will run useEffect
+//dependency array can take more than one value
+function App() {
+  const [name, setName] = useState("Leticia");
+  useEffect(() => {
+    console.log("here");
+  }, [name]); //second parameter is called the dependency array
+
+  return (
+    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+  );
+}
+
+//EXERCISE: useEffect will fire everytime only the age has changed,console.log useEffect + value changed
+function App() {
+  const [name, setName] = useState("Leticia");
+  const [age, setAge] = useState(0);
+
+  useEffect(() => {
+    console.log("Age has changed", age); //age logging out the value
+  }, [age]); // [age] saying what change of value will trigger
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        type="number"
+        value={age}
+        onChange={(e) => setAge(e.target.value)}
+      />
+    </div>
+  );
+}
+
+//if you pass empty array on the depedency array, it will run only on mountain stage
+useEffect(() => {
+  console.log("mount"); //age logging out the value
+}, []);
+
+//use case
+//code below: everytime the window rezise it will show its width
+function App() {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setWidth(window.innerWidth);
+    });
+  }, []);
+
+  return <div>{width}</div>;
+}
+
+//use case
+//removing the event listener everytime time the useEffect reruns
+//result: it won't log every little change on an input but finalresult when user click outside input
+//essentially removing the last run and updating it with most recent run
+//return function inside useEffect after 1st function
+function App() {
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const handler = () => {
+      console.log(name);
+    };
+
+    document.addEventListener("click", handler);
+    return () => {
+      document.removeEventListener("click", handler);
+    };
+  }, [name]);
+
+  return (
+    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+  );
+}
