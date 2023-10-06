@@ -1,23 +1,58 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 
 function App() {
-  const [name, setName] = useState("");
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const handler = () => {
-      console.log(name);
+    setError(null);
+    const controller = new AbortController();
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          "https://jsonplaceholder.typicode.com/usersvvv",
+          { signal: controller.signal }
+        );
+        if (!response.ok) {
+          throw new Error(`API call was not ok (${response.status})`);
+        }
+
+        const result = await response.json();
+        setData(result);
+      } catch (err) {
+        if (err.name === "AbortError") {
+          return;
+        }
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    document.addEventListener("click", handler);
+    fetchData();
+
     return () => {
-      document.removeEventListener("click", handler);
+      controller.abort();
     };
-  }, [name]);
+  }, []);
+
+  let jsx;
+  if (loading) {
+    jsx = <h2>Loading...</h2>;
+  } else if (error != null) {
+    jsx = <h2>Error! {error}</h2>;
+  } else {
+    jsx = JSON.stringify(data);
+  }
 
   return (
-    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+    <div>
+      <h1>Users</h1>
+      {jsx}
+    </div>
   );
 }
 

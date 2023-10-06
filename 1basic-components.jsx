@@ -415,3 +415,145 @@ function App() {
     <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
   );
 }
+
+//-------------------------- 31. STRICT MODE --------------------//
+//strict mode is good for detecting and checking things
+//when using strict mode, the component will
+//1. mount
+//2.unmount simulation
+//3. then mount it again
+//this is only development tool to try detect hidden bugs on the code
+//when deplying the site strict mode will not run
+
+//recommend keep strict mode enable
+//can remove the second log from strcit mode
+//1.go to settings into react dev tools
+//2. enable "hide logs during second render strict mode"
+
+{
+  /*
+The reason StrictMode double renders is because the way React renders components and handles
+things for you it does not guarantee that your component will only run once per render. For example,
+if something happened that caused your component to need to re-render in the middle of it already trying
+to re-render (or if React decides to cancel and restart a re-render because of something that happens)
+it could cause yor variables to become out of sync if you write them like globalVar. This is because if your 
+component runs twice but only renders once (like in the case of StrictMode) it will cause your state to be out of sync.
+*/
+}
+
+//-------------------------- 32.FETCHING DATA FROM API --------------------//
+//having the fetch inside a useEffect is better practice , so it runs only on mount
+//fetching the API
+useEffect(() => {
+  fetch("https://jsonplaceholder.typicode.com/users")
+    .then((response) => response.json())
+    .then((data) => console.log(data)); //
+}, []); //(10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+
+//IMPORTANT!!!!  Waiting response from fetch to log API, catching an error and avoiding double mount due to strict mode
+//when fetching need to make sure you have a loading state to track the API fetch
+// otherwise it can return undefined if API hasn't completely returned yet
+function App() {
+  //Setting the api data inside a state
+  const [users, setUsers] = useState();
+  //creating the loading to track API return and avoid undefined return
+  const [loading, setLoading] = useState(true);
+  //creating the error useState
+  const [error, setError] = useState();
+
+  //fetching the API
+  useEffect(() => {
+    //loading set to true before fetching
+    setLoading(true);
+    setError(undefined); //can declare this to make sure error is empty before
+    const controller = new AbortController(); // object that allows you to abort one or more Web requests as and when desired.
+
+    fetch("https://jsonplaceholder.typicode.com/users", {
+      signal: controller.signal,
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          //checking to see if response is true, .status === 200 means successful
+          return response.json(); //parsing/creating a json from API link response if successful
+        } else {
+          return Promise.reject(response); //if not successfull, we reject as an Error
+        }
+      })
+      .then((data) => setUsers(data))
+      .catch((err) => {
+        if (err?.name === "AbortError") return; //checking if error is not related to the abort of double mounting due to strict mode
+        setError(err); //error is being caught here on .catch, then set error will have a value and wont be null
+      })
+      .finally(() => {
+        setLoading(false); //loading set to false after done fetching
+      });
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+  //variable that will store data from API
+  let usersRender;
+
+  if (loading) {
+    usersRender = <h2>Loading...</h2>;
+  } else if (error != null) {
+    //if the error useState is not emprty, means there was an error passed
+    usersRender = <h2>There was an error fetching the API</h2>;
+  } else {
+    //passing from .json into an string
+    usersRender = JSON.stringify(users);
+  }
+
+  console.log(users);
+  return (
+    <div>
+      <h1>Users</h1>
+      {usersRender}
+    </div>
+  );
+}
+
+//SAME way to fetch but using a async / await | try / catch approach
+function App() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setError(null);
+    const controller = new AbortController();
+
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          "https://jsonplaceholder.typicode.com/users",
+          { signal: controller.signal }
+        );
+        if (!response.ok) {
+          throw new Error(`API call was not ok (${response.status})`);
+        }
+
+        const result = await response.json();
+        setData(result);
+      } catch (err) {
+        if (err.name === "AbortError") {
+          return;
+        }
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+  //from down here same code as previous example
+}
