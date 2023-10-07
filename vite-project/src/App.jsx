@@ -1,58 +1,33 @@
 import { useState, useEffect } from "react";
 
 function App() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  //this is an array
+  const [items, setItems] = useState([
+    { id: crypto.randomUUID(), name: "Item 1" },
+    { id: crypto.randomUUID(), name: "Item 2" },
+  ]);
 
-  useEffect(() => {
-    setError(null);
-    const controller = new AbortController();
-
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          "https://jsonplaceholder.typicode.com/usersvvv",
-          { signal: controller.signal }
-        );
-        if (!response.ok) {
-          throw new Error(`API call was not ok (${response.status})`);
-        }
-
-        const result = await response.json();
-        setData(result);
-      } catch (err) {
-        if (err.name === "AbortError") {
-          return;
-        }
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
-
-  let jsx;
-  if (loading) {
-    jsx = <h2>Loading...</h2>;
-  } else if (error != null) {
-    jsx = <h2>Error! {error}</h2>;
-  } else {
-    jsx = JSON.stringify(data);
+  //fucntion to create new object
+  function addItem() {
+    setItems((currentItems) => {
+      //and return prev objects plus the new one created
+      return [{ id: crypto.randomUUID(), name: "New Item" }, ...currentItems];
+    });
   }
-
   return (
-    <div>
-      <h1>Users</h1>
-      {jsx}
-    </div>
+    <>
+      <button onClick={addItem}>Add new Item</button>{" "}
+      {items.map((item) => {
+        //mapping the items and returning name + input of each object
+        //each item HAS to have a key, in order to input be tied to that item only
+        return (
+          <div key={item.id}>
+            {item.name}
+            <input type="text" />
+          </div>
+        );
+      })}
+    </>
   );
 }
 
