@@ -62,7 +62,7 @@ return (
 );
 //if you're passing more than one element like case above with label/input it HAS to be wrapped on smt like a <div> or You can wrap multiple children in <></> to avoid extra nodes like divs.
 //things you can return from a component string, number, array
-// undefined, null and false inside { } wont return anything on jsx, can be placeholder
+// undefined, null and false inside { } wont return ANYTHING on jsx, can be placeholder
 
 //-------------------------- 11. CREATING COMPONENTS --------------------//
 //components should start with capital letter and be CamelCase
@@ -446,7 +446,7 @@ component runs twice but only renders once (like in the case of StrictMode) it w
 //fetching the API
 useEffect(() => {
   fetch("https://jsonplaceholder.typicode.com/users")
-    .then((response) => response.json())
+    .then((APIresponse) => APIresponse.json())
     .then((data) => console.log(data)); //
 }, []); //(10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
 
