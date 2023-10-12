@@ -1,32 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { render } from "react-dom";
+import { ToDoList } from "./ToDoList";
+
+//EXERCISE - create TodoListItem Componenet
+//props: will be children with name, isComplete boolean
+//render out checkbox, (checked if complete)
+//label will be (children value)
 
 function App() {
-  //this is an array
-  const [items, setItems] = useState([
-    { id: crypto.randomUUID(), name: "Item 1" },
-    { id: crypto.randomUUID(), name: "Item 2" },
-  ]);
-
-  //fucntion to create new object
-  function addItem() {
-    setItems((currentItems) => {
-      //and return prev objects plus the new one created
-      return [{ id: crypto.randomUUID(), name: "New Item" }, ...currentItems];
-    });
-  }
   return (
     <>
-      <button onClick={addItem}>Add new Item</button>{" "}
-      {items.map((item) => {
-        //mapping the items and returning name + input of each object
-        //each item HAS to have a key, in order to input be tied to that item only
-        return (
-          <div key={item.id}>
-            {item.name}
-            <input type="text" />
-          </div>
-        );
-      })}
+      <ToDoList isComplete>Leticia</ToDoList>
+      <ToDoList>Hi</ToDoList>
     </>
   );
 }

@@ -18,7 +18,7 @@ import { render } from "react-dom";
 //DIFFERENCES BETWEEN HTML AND JSX SYNTAX
 //1. everything will be CamelCase instead of using-dash, unless dealing with some data attributes or aria(?)
 
-// 2. the word class is used for actually creating a class, we cant use the class keyword need to use ClassName instead
+// 2. to declare a class inside an element, we cant use the class keyword need to use ClassName instead
 function App() {
   return <h1 className="hi"> Hello World </h1>;
 }
@@ -65,7 +65,7 @@ return (
 // undefined, null and false inside { } wont return ANYTHING on jsx, can be placeholder
 
 //-------------------------- 11. CREATING COMPONENTS --------------------//
-//components should start with capital letter and be CamelCase
+//components should start with capital letter and be eg.: CamelCase
 /*function component 
 1.create a new File,recommend to name the file the same as component name
 2. code on the file: 
@@ -78,7 +78,7 @@ export function TodoList() {
       <li>item 4</li>
     </ul>
   );
-}
+} //all this code is doing is returning a list of items on html
 3. need to export code from that file and import to the main one using import 
 4. how to use component code on the main file 
  return (
@@ -112,40 +112,47 @@ export class TodoListClass extends React.Component {
 
 //-------------------------- 11. PROPS > PROPERTIES --------------------//
 //Example of property
-//creating properties on the imported code
-function App() {
-  return (
-    <div>
-      {/*this way can use the property component twice and give different info*/}
-      <MyName name="leti" age={26} /> {/*Leti 26*/}
-      <MyName name="luca" age={31} /> {/*Luca 31*/}
-    </div>
-  );
-}
-//to access these properties, the function needs a parameter and we access the parameter as we access object in javascript
+
+//1. creating properties the function needs a parameter and we access the parameter as we access object in javascript
 export function MyName(props) {
+  // indicates the compo will have props
   return (
     <h1>
       {props.name} {props.age}
     </h1>
   );
 }
+//2. acessing properties on the imported component main file
+function App() {
+  return (
+    <div>
+      {/*this way can use the property component twice and give different info*/}
+      <MyName name="leti" age={26} /> {/*Leti 26 */}
+      <MyName name="luca" age={31} /> {/*Luca 31*/}
+    </div>
+  );
+}
 
 //for the property that goes into the function, it can be destructed to avoid writing props.something all the time
-//can also pass a boolean , if no value will be set to true (?)
+//can also pass a boolean , if no value set will be set to true as default
 export function MyName({ name, age, isProgrammer }) {
   {
-    console.log("Is programmer?", isProgrammer);
-  } //will return true or false whatever we put on main file code
+    console.log("Is programmer?", isProgrammer); //undefined
+  }
+  //waiting to be declared when calling compo on main file code
   return (
     <h1>
       {name} {age}
     </h1>
   );
 }
+//main file
+function App() {
+  return <MyName name="leti" age={36} isProgrammer />; //leti 36 // Console = Is programmer? true ,  no value set will be true
+}
 
 //how to pass along a child
-//on the component file  (HAS TO BE children, other prop name won't work)
+//on the component file prop (HAS TO BE children, other prop name won't work)
 export function MyName({ children }) {
   return <h1>{children}</h1>;
 }
@@ -171,7 +178,7 @@ export function TodoList({ children, isComplete }) {
   );
 }
 //main file
-function NewApp() {
+function App() {
   return (
     <div>
       <TodoList isComplete>todo item 1</TodoList>
@@ -179,6 +186,9 @@ function NewApp() {
     </div>
   );
 }
+//logic behind props: anything you want to change can be defined on the props,
+//and anything you want to keep the same can be defined on the component
+
 //with class components , the differences
 // render() {
 //   return (
@@ -189,7 +199,7 @@ function NewApp() {
 //   );
 // }
 
-//logic behind props: anything you want to change can be defined on the props, and anything you want tokeep the same can be defined on the component
+//REVIEW STOPPED 12/10
 //-------------------------- 13. DECLARATIVE VS IMPERATIVE --------------------//
 /*imperative --> focused on HOW it is to be done; 
 declarative --> specifying what you want.
