@@ -1,18 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { render } from "react-dom";
-import { ToDoList } from "./ToDoList";
-
-//EXERCISE - create TodoListItem Componenet
-//props: will be children with name, isComplete boolean
-//render out checkbox, (checked if complete)
-//label will be (children value)
+import { Counter } from "./Counter";
 
 function App() {
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const handler = () => {
+      console.log(name);
+    };
+
+    document.addEventListener("click", handler);
+    // return () => {
+    //   document.removeEventListener("click", handler);
+    // };
+  }, [name]);
+
   return (
-    <>
-      <ToDoList isComplete>Leticia</ToDoList>
-      <ToDoList>Hi</ToDoList>
-    </>
+    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
   );
 }
 

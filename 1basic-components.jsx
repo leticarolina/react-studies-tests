@@ -114,10 +114,12 @@ export class TodoListClass extends React.Component {
 //Example of property
 
 //1. creating properties the function needs a parameter and we access the parameter as we access object in javascript
+//on the component file
 export function MyName(props) {
   // indicates the compo will have props
   return (
     <h1>
+      {/* can choose any name for prop holding value */}
       {props.name} {props.age}
     </h1>
   );
@@ -215,13 +217,15 @@ or what style to add to an element. React works in the same manner.
 
 //-------------------------- 14. IMPORTING NON-JS FILE --------------------//
 //how to import thing that aren't normal javascript or jsx
-//on the main file of your code (App.jsx) can use keyword
+//on the main file of your code (App.jsx) can use keyword import
 
-//impoting CSS
+//example for impoting CSS
 // import "./styles.css"  (it won't be imported on html head)
-//importing Json
+
+//example for importing Json
 //import user from "./user.json" (then need to declare in order to use {JSON.stringfy{user}}  )
-//importing image
+
+//example for importing image
 //import img from "./NameOfFile.png"
 
 //-------------------------- 17. useState Hooks --------------------//
@@ -230,7 +234,7 @@ or what style to add to an element. React works in the same manner.
 
 //breaking out a useState
 function App() {
-  //declaring the state as a varible but name of the variable is like an array
+  //declaring the state as a varible but name of the variable is like an array with 2 values
   //setAge index we will use to update the age value, it can be any variable name but standart start with set
   const [age, setAge] = useState(26); //default value to be 26
   console.log("current", age); // current 26
@@ -244,18 +248,30 @@ function App() {
 
 //more complex things of useState
 
-//if you a pass a function to useState instead of a value, it gets the value of the function and then never run it again
+//if you a pass a function to useState instead of a value, it gets the value of the function once and then never run it again
 function App() {
   const [age, setAge] = useState(() => {
     return 26;
   });
 }
-//or pass the function, not call it with ()
-function slowGetter() {
-  console.log("slow code"); //this code will run only once since it's slow
-  return 26;
+//same if pass the function and not call it with ()
+function App() {
+  const [age, setAge] = useState(getter); // //if using slowGetter() it will call the function every time it re-renders
+  function getter() {
+    console.log("hi"); //will log only on mount bcs no ()
+    return 27;
+  }
+
+  function newAge() {
+    console.log("mudei"); //will log everytime age is clicked
+    return setAge(28);
+  }
+  return (
+    <>
+      <h2 onClick={newAge}>{age}</h2>
+    </>
+  );
 }
-const [age, setAge] = useState(slowGetter); //if using slowGetter() it will call the function every time it re-renders
 
 //changing 2 values at the same time using useState
 function App() {
@@ -278,12 +294,13 @@ function App() {
 
 //if you are setting a value that depends on the previous or the current value of the state
 // need to use the function version of set state
-// in other words: anytime you need the current state to update the new state you should always use the function version.
+// in other words: anytime you need the current state to update the new setstate you should always use the function version.
 //However, in case you don't care or new value is not dependent on the prev value, can set normally without fucntion
 function newAge() {
   //this won't work
   setAge(age + 1);
-  setAge(age + 1);
+  setAge(age + 1); //you are setting a value that depends on the previous
+
   //values will have to be set as functions
   setAge((current) => {
     return current + 1;
@@ -296,6 +313,7 @@ function newAge() {
 //EXERCISE: create component called Counter
 //have a state for a counter that starts with 0
 //when you click the number increments by 1
+
 //this works all on same file
 function App() {
   const [counter, setCounter] = useState(0);
@@ -304,6 +322,7 @@ function App() {
   }
   return <h1 onClick={addCounter}>{counter}</h1>;
 }
+
 //creating a separate file for the component
 import { useState } from "react";
 export function AddCounter() {
@@ -311,10 +330,12 @@ export function AddCounter() {
 
   function handleClick() {
     setCounter((current) => current + 1);
+    //orrr
+    // return setCount(count + 1); //same result
   }
+
   return <h1 onClick={handleClick}>{counter}</h1>;
 }
-
 //original file
 import { AddCounter } from "./AddCounter";
 function App() {
@@ -331,27 +352,30 @@ function App() {
     <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
   );
 }
-//if you wsnt to skip code "onChange" can set a defaultValue, however it won't be updated any state variable (react has no control)
+//if you want to skip code "onChange" can set a defaultValue, however it won't be updated any state variable (react has no control)
 
 //-------------------------- 24.COMPONENT LIFECYCLE --------------------//
 //Terminology
-//1.mountain = rerender>unmountain
+//1.mountain
+//2.rerender = when anything changes on code
+//3. unmountain = when something is removed from code
 
 //-------------------------- 25.useEffect Hook --------------------//
-//useEffect takes a function and will run every time the App rerenders if only function declared
+//useEffect takes a function and will run every time the App rerenders if no dependency array declared
+//example of use effect with no dependency array
 function App() {
   useEffect(() => {
     console.log("here");
   });
 } //every refresh logs "here"
 
-//second parameter of function useEffect takes is an array with value [name],anytime values in the array changes then it will run useEffect
+//second parameter of function useEffect takes is an array with value [name],anytime value declared on thus array changes then it will rerun useEffect
 //dependency array can take more than one value
 function App() {
   const [name, setName] = useState("Leticia");
   useEffect(() => {
     console.log("here");
-  }, [name]); //second parameter is called the dependency array
+  }, [name]); //will log here everytime [name] is updated
 
   return (
     <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
@@ -385,7 +409,7 @@ function App() {
 
 //if you pass empty array on the depedency array, it will run only on mountain stage
 useEffect(() => {
-  console.log("mount"); //age logging out the value
+  console.log("mount");
 }, []);
 
 //use case
