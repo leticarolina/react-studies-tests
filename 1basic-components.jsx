@@ -141,7 +141,7 @@ export function MyName({ name, age, isProgrammer }) {
   {
     console.log("Is programmer?", isProgrammer); //undefined
   }
-  //waiting to be declared when calling compo on main file code
+  //props waiting to be declared when calling compo on main file code
   return (
     <h1>
       {name} {age}
@@ -202,6 +202,42 @@ function App() {
 // }
 
 //REVIEW STOPPED 12/10
+
+//-------------------------- 39. SPREAD PROPS --------------------//
+//spread props is a way to get multiple prop keys of an object withpout having to write one by one
+
+//Most often if you spread an object it is because you want to pass most or all of it to the component and not just one or two props.
+//IMPORTANT: can only take primeray keys of objects, if nested key cannot be taken by spread props need to declare separetely
+
+//for the code under there is an API with users, that containe id, name, phone,etc
+//component file
+export function Component({ name, phone }) {
+  return (
+    <li>
+      {/* if you declare a prop here that doesnt exist as a key on the API it just wont be returned */}
+      {name}, {phone}
+    </li>
+  );
+}
+//original app file
+import { Component } from "./Component"; //importing the componenet function
+import users from "./users.json"; //importing the users API
+
+function App() {
+  return (
+    <>
+      <h1>User List</h1>
+      <ul>
+        {users.map((person) => {
+          //mapping all the users into separate person
+          console.log(person);
+          return <Component key={person.id} {...person} />; // {...person} tells to match every prop the Component is returning with the keys person mapped has and return them.
+        })}
+      </ul>
+    </>
+  );
+}
+
 //-------------------------- 13. DECLARATIVE VS IMPERATIVE --------------------//
 /*imperative --> focused on HOW it is to be done; 
 declarative --> specifying what you want.
@@ -216,7 +252,7 @@ or what style to add to an element. React works in the same manner.
 */
 
 //-------------------------- 14. IMPORTING NON-JS FILE --------------------//
-//how to import thing that aren't normal javascript or jsx
+//how to import things that aren't normal javascript or jsx
 //on the main file of your code (App.jsx) can use keyword import
 
 //example for impoting CSS
@@ -631,7 +667,7 @@ if (favoriteNumber !== null) {
 //-------------------------- 35. RENDERING LISTS--------------------//
 //possibility of rendering elements that are inside an array
 function App() {
-  //this is an array
+  //this is an array usestate
   const [items, setItems] = useState([
     { id: crypto.randomUUID(), name: "Item 1" },
     { id: crypto.randomUUID(), name: "Item 2" },
@@ -697,3 +733,6 @@ function App() {
     <input type="text"></input>
   </React.Fragment>;
 }
+
+//-------------------------- 39. SPREAD PROPS --------------------//
+//Most often if you spread an object it is because you want to pass most or all of it to the component and not just one or two props.

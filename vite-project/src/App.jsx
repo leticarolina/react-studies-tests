@@ -1,23 +1,19 @@
 import { useState, useEffect } from "react";
 import { render } from "react-dom";
-import { Counter } from "./Counter";
+import { Component } from "./Component";
+import users from "./users.json";
 
 function App() {
-  const [name, setName] = useState("");
-
-  useEffect(() => {
-    const handler = () => {
-      console.log(name);
-    };
-
-    document.addEventListener("click", handler);
-    // return () => {
-    //   document.removeEventListener("click", handler);
-    // };
-  }, [name]);
-
   return (
-    <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+    <>
+      <h1>User List</h1>
+      <ul>
+        {users.map((person) => {
+          console.log(person);
+          return <Component key={person.id} {...person} />;
+        })}
+      </ul>
+    </>
   );
 }
 
