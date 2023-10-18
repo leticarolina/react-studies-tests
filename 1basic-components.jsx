@@ -220,7 +220,7 @@ export function Component({ name, phone }) {
   );
 }
 //original app file
-import { Component } from "./Component"; //importing the componenet function
+import { Component } from "./Component"; //importing the component function
 import users from "./users.json"; //importing the users API
 
 function App() {
@@ -231,7 +231,8 @@ function App() {
         {users.map((person) => {
           //mapping all the users into separate person
           console.log(person);
-          return <Component key={person.id} {...person} />; // {...person} tells to match every prop the Component is returning with the keys person mapped has and return them.
+          return <Component key={person.id} {...person} />; // {...person} tells to match every prop the Component is returning with the keys "person" object mapped has.
+          //essentially by spreading {...person} it takes every single property that is on users and pass it to User Componenet
         })}
       </ul>
     </>
@@ -734,5 +735,16 @@ function App() {
   </React.Fragment>;
 }
 
-//-------------------------- 39. SPREAD PROPS --------------------//
-//Most often if you spread an object it is because you want to pass most or all of it to the component and not just one or two props.
+//----------------------- 40. RENDER RAW HTML --------------------//
+//a way to render html that is on a string inside react
+
+//html in a string to be rendered
+const CUSTOM_URL = `<h1>Leticia Azevedi</h1>`;
+
+function App() {
+  //syntax dangerouslySetInnerHTML={{ __html: variable }}
+  return <div dangerouslySetInnerHTML={{ __html: CUSTOM_URL }}> </div>;
+}
+
+//NOTES: this is not very common to use
+//syntax is dangerous bcs if you have any user input on the stringified html you open room for "cross site scripting" and the site to be hacked
