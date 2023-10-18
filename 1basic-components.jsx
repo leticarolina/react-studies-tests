@@ -256,7 +256,7 @@ or what style to add to an element. React works in the same manner.
 //how to import things that aren't normal javascript or jsx
 //on the main file of your code (App.jsx) can use keyword import
 
-//example for impoting CSS
+//example for impoting CSS , css need to be imported on the Main file where the restrictMode is
 // import "./styles.css"  (it won't be imported on html head)
 
 //example for importing Json
