@@ -1,22 +1,33 @@
+//--------------------- 8. VITE REACT APP---------------//
 //to run Vite need to declare on terminal
 //npm create vite@latest
 //Done. Now run:
 // cd vite-project
 // npm install
 // npm run dev
+
 //to start vite after run
 //npm run dev > will start vite
 
 import { render } from "react-dom";
 
+// Hotfix
+//ERROR when rerunning vite app
+
+//1.delete node-modules folder
+//2.run command > cd "path for vite folder with package.json inside"
+//3. run command >  npm install
+//4. run command> npm run dev
+
 //--------------------- 9. THINKING IN COMPONENTS----------------//
 //https://courses.webdevsimplified.com/view/courses/react-simplified-beginner/1764768-basic-components/5598791-09-thinking-in-components
+//if you change one and want all of the similar to change UI too then it should be on a component
 
 //-------------------------- 10. JSX BASICS --------------------//
 //jsx is a different syntax of writing html code to your page
 
 //DIFFERENCES BETWEEN HTML AND JSX SYNTAX
-//1. everything will be CamelCase instead of using-dash, unless dealing with some data attributes or aria(?)
+//1. everything declared in the html element will be CamelCase instead of using-dash, unless dealing with some data attributes or aria(?)
 
 // 2. to declare a class inside an element, we cant use the class keyword need to use ClassName instead
 function App() {
