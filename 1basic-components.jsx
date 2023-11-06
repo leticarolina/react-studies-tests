@@ -40,9 +40,11 @@ function App() {
 //3. anything that is not a string will have to be in curly braces
 //example css style are passed as object
 <h1 style={{ background: "red" }}>hello World</h1>;
+//background-color again will have to refer to camelCase
+<h1 style={{ backgroundColor: "red" }}>hello World</h1>;
 //4. whenever you have curly brackets inside jsx will execute javascript code
 return <h1>{2 + 4}</h1>; //6
-//in html some elements does't need a closing tag, in jsx every tag needs to be closed
+//in html some elements does't need a closing tag, in jsx every tag needs to be closed even img , input
 
 //EXERCISE
 //create a div with the class large and id largeDiv
@@ -60,7 +62,7 @@ return (
     <input id="inputID" type="number" value={3} />
   </div>
 );
-//if you want value to change need to declare defaultValue instead of value
+//value in the code above cannot be changed, if you want value to change need to declare defaultValue instead of value
 
 //TIP
 //can declare js variable,  set the value to html code,  and then use the {variable}
@@ -77,9 +79,10 @@ return (
 
 //-------------------------- 11. CREATING COMPONENTS --------------------//
 //components should start with capital letter and be eg.: CamelCase
+
 /*function component 
 1.create a new File,recommend to name the file the same as component name
-2. code on the file: 
+2. example code on the component file: 
 export function TodoList() {
   return (
     <ul>
@@ -89,8 +92,8 @@ export function TodoList() {
       <li>item 4</li>
     </ul>
   );
-} //all this code is doing is returning a list of items on html
-3. need to export code from that file and import to the main one using import 
+} //all this code is doing is returning a list of items 
+3. need to export code from component file and import to the main one using import 
 4. how to use component code on the main file 
  return (
       <TodoList />
@@ -119,18 +122,18 @@ export class TodoListClass extends React.Component {
 */
 
 //TIP: components can be defined on the same file but for better practice create a new file
-//TIP: when doing export the import will have curly brackets, when doing export deafult the import has no curly brackets
+//IMPORT SYNTAX: when doing export the import will have curly brackets, when doing export deafult the import has no curly brackets
 
 //-------------------------- 11. PROPS > PROPERTIES --------------------//
 //Example of property
 
-//1. creating properties the function needs a parameter and we access the parameter as we access object in javascript
-//on the component file
+//1. creating properties means the component function will take a parameter(s) and we access this parameter as we access object in javascript
+//example on the component file
 export function MyName(props) {
-  // indicates the compo will have props
+  // props is a property crated, indicates the compo will have props
   return (
     <h1>
-      {/* can choose any name for prop holding value */}
+      {/* can choose any name for prop holding value, .name .age will be the key to access value on main file as name="prop" */}
       {props.name} {props.age}
     </h1>
   );
@@ -146,13 +149,41 @@ function App() {
   );
 }
 
+//another example
+export function TodoList(prop) {
+  return (
+    <>
+      <h1>{prop.title}</h1>
+      <h2> {prop.subtitle}</h2>
+    </>
+  );
+}
+//code on the main file App.jsx
+function App() {
+  return <TodoList title="alo" subtitle="sub" />; //will render "alo" as h1 and "sub" as h2
+}
+
 //for the property that goes into the function, it can be destructed to avoid writing props.something all the time
-//can also pass a boolean , if no value set will be set to true as default
+//this will have same exact output as previous example
+export function TodoList({ title, subtitle }) {
+  return (
+    <>
+      <h1>{title}</h1>
+      <h2> {subtitle}</h2>
+    </>
+  );
+}
+//code on main file
+function App() {
+  return <TodoList title="alo" subtitle="sub" />;
+}
+
+//can also pass a boolean , if no value passed on the prop it will be set to TRUE as default
 export function MyName({ name, age, isProgrammer }) {
   {
-    console.log("Is programmer?", isProgrammer); //undefined
+    console.log("Is programmer?", isProgrammer); //undefined, bcs not defined as boolean yet
   }
-  //props waiting to be declared when calling compo on main file code
+  //props waiting to be declared when called compo on main file code
   return (
     <h1>
       {name} {age}
@@ -164,7 +195,8 @@ function App() {
   return <MyName name="leti" age={36} isProgrammer />; //leti 36 // Console = Is programmer? true ,  no value set will be true
 }
 
-//how to pass along a child
+//how to pass along a children
+//children is be able to set value <>inside</>  of the component
 //on the component file prop (HAS TO BE children, other prop name won't work)
 export function MyName({ children }) {
   return <h1>{children}</h1>;
@@ -173,7 +205,9 @@ export function MyName({ children }) {
 function App() {
   return (
     <div>
-      <MyName>{"Leticia Azevedo"}</MyName>
+      {/* on the children prop you will change it's value like syntax below, the h1 element could have also been declared here but children must be wrapped on smt on the component */}
+
+      <MyName>Leticia Azevedo</MyName>
     </div>
   );
 }
@@ -195,12 +229,14 @@ function App() {
   return (
     <div>
       <TodoList isComplete>todo item 1</TodoList>
+      {/* checkbox here wont be checked */}
       <TodoList isComplete={false}>todo item 2</TodoList>
     </div>
   );
 }
 //logic behind props: anything you want to change can be defined on the props,
 //and anything you want to keep the same can be defined on the component
+//TIP: props can have a default value eg: TodoList({ children, isComplete = false }), so if you don't declare value on main file if will be auto set to false
 
 //with class components , the differences
 // render() {
@@ -211,8 +247,6 @@ function App() {
 //     </div>
 //   );
 // }
-
-//REVIEW STOPPED 12/10
 
 //-------------------------- 39. SPREAD PROPS --------------------//
 //spread props is a way to get multiple prop keys of an object withpout having to write one by one
@@ -267,14 +301,16 @@ or what style to add to an element. React works in the same manner.
 //how to import things that aren't normal javascript or jsx
 //on the main file of your code (App.jsx) can use keyword import
 
-//example for impoting CSS , css need to be imported on the Main file where the restrictMode is
+//example for impoting CSS , css need to be imported on the Main file where the restrictMode is or App.jsx
 // import "./styles.css"  (it won't be imported on html head)
 
 //example for importing Json
-//import user from "./user.json" (then need to declare in order to use {JSON.stringfy{user}}  )
+//import user from "./user.json" (then need to declare further if want to use the string eg. {JSON.stringfy{user}}  )
 
 //example for importing image
 //import img from "./NameOfFile.png"
+//using the imgae
+<img src={img}></img>;
 
 //-------------------------- 17. useState Hooks --------------------//
 //state is data that can change over time, will be updated, and whenever that data changes you wanna re-render your component
