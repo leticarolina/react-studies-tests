@@ -314,19 +314,19 @@ or what style to add to an element. React works in the same manner.
 
 //-------------------------- 17. useState Hooks --------------------//
 //state is data that can change over time, will be updated, and whenever that data changes you wanna re-render your component
-//hooks will always be placed first on the code above the return
+//-- hooks will always be placed first on the code above the return
 
 //breaking out a useState
 function App() {
-  //declaring the state as a varible but name of the variable is like an array with 2 values
-  //setAge index we will use to update the age value, it can be any variable name but standart start with set
-  const [age, setAge] = useState(26); //default value to be 26
+  //declaring the useState as a variable but name of the variable is like an array with 2 values
+  //the setAge index we will use to update the age value, it can be any variable name but standart is the update variable start with set
+  const [age, setAge] = useState(26); //default is set to 26
   console.log("current", age); // current 26
   //function to update the value, setting setAge to 27, will override default value
   function newAge() {
     setAge(27);
   }
-  //onclick age will turn to 27, when update state variable it reruns the entire componenet with the new value set
+  //onclick age will turn to 27, when update state variable it reruns the entire componenet > function App() with the new value set
   return <h2 onClick={newAge}> Next age {age} </h2>; //Next age 27
 }
 
@@ -338,9 +338,9 @@ function App() {
     return 26;
   });
 }
-//same if pass the function and not call it with ()
+//same if pass a function as value of useState and not call it with ()
 function App() {
-  const [age, setAge] = useState(getter); // //if using slowGetter() it will call the function every time it re-renders
+  const [age, setAge] = useState(getter); // //if using getter() it will call the function every time it re-renders
   function getter() {
     console.log("hi"); //will log only on mount bcs no ()
     return 27;
@@ -352,43 +352,46 @@ function App() {
   }
   return (
     <>
-      <h2 onClick={newAge}>{age}</h2>
+      <h2 onClick={newAge}>{age}</h2> {/* 28  */}
     </>
   );
 }
 
 //changing 2 values at the same time using useState
 function App() {
-  const [age, setAge] = useState(26);
-  const [name, setName] = useState("leti ");
+  const [name, setName] = useState("Leticia");
+  const [age, setAge] = useState();
+  const [hobby, setHobby] = useState();
 
-  function newAge() {
-    setAge(27);
-    setName("azevedo ");
+  function changeName() {
+    setName("Leti");
+    setAge(26);
+    setHobby("swimming");
   }
-
   return (
-    //onclick will change to azevedo 27
-    <h2 onClick={newAge}>
+    <h1 onClick={changeName}>
       {" "}
-      {name} {age}{" "}
-    </h2>
+      My nickname is: {name}, my age is {age}, my hobby is: {hobby}
+      {/* age and hobby will not show up until h1 is clicked, because useState does NOT have a defaukt value*/}
+    </h1>
   );
 }
 
 //if you are setting a value that depends on the previous or the current value of the state
-// need to use the function version of set state
+//then need to use the function version of set useState
 // in other words: anytime you need the current state to update the new setstate you should always use the function version.
-//However, in case you don't care or new value is not dependent on the prev value, can set normally without fucntion
+//However, in case you don't care about it or new value is not dependent on the previous value, can set value normally without function
 function newAge() {
   //this won't work
   setAge(age + 1);
-  setAge(age + 1); //you are setting a value that depends on the previous
+  setAge(age + 1); // setting a value that depends on the previous to add +1
 
   //values will have to be set as functions
+  //fucntion will take the current value and add one more
   setAge((current) => {
     return current + 1;
   });
+  //fucntion will take the current value and add one more
   setAge((current) => {
     return current + 1;
   });
@@ -415,7 +418,7 @@ export function AddCounter() {
   function handleClick() {
     setCounter((current) => current + 1);
     //orrr
-    // return setCount(count + 1); //same result
+    // return setCounter(count + 1); //same result
   }
 
   return <h1 onClick={handleClick}>{counter}</h1>;
@@ -426,9 +429,26 @@ function App() {
   return <AddCounter />;
 }
 
+//can also pass an object inside useState
+function App() {
+  const [person, setPerson] = useState({ name: "leticia ", age: 26 });
+  function change() {
+    setPerson({ name: "leti ", age: 25 });
+    // if you don't redeclare the object key here it wont be returned, because this syntax is creating a brand new object
+  }
+  return (
+    <h1 onClick={change}>
+      {" "}
+      hi {person.name}
+      {person.age}
+    </h1>
+  );
+}
+
 //-------------------------- 19. INPUT EVENT LISTENERS --------------------//
 //event listeners on the input
-//need to always use  onChange={(e) => setName(e.target.value)} so react has control of the input
+//need to always use along syntax onChange={(e) => setName(e.target.value)} so react has control of the input
+
 //onChange event fires after you type any caracter in the input
 function App() {
   const [name, setName] = useState("Leticia");
@@ -436,7 +456,7 @@ function App() {
     <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
   );
 }
-//if you want to skip code "onChange" can set a defaultValue, however it won't be updated any state variable (react has no control)
+//if you want to skip code "onChange" can set a defaultValue, however it won't be updated on the state variable (react has no control)
 
 //-------------------------- 24.COMPONENT LIFECYCLE --------------------//
 //Terminology
