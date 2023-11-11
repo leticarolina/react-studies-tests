@@ -1,17 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
-  const [person, setPerson] = useState("leticia ");
+  const [width, setWidth] = useState(window.innerWidth);
 
-  return (
-    <input
-      type="text"
-      value={person}
-      onChange={(e) => {
-        setPerson(e.target.value);
-      }}
-    ></input>
-  );
+  useEffect(() => {
+    setWidth(window.innerWidth);
+  }, [width]);
+
+  return <div>{width}</div>;
 }
 
 //EXERCISE: create component called Counter

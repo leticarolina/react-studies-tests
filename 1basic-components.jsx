@@ -454,6 +454,7 @@ function App() {
   const [name, setName] = useState("Leticia");
   return (
     <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+    // onclick, the setName will be the e.target.value so that will also be new value={name}
   );
 }
 //if you want to skip code "onChange" can set a defaultValue, however it won't be updated on the state variable (react has no control)
@@ -464,8 +465,10 @@ function App() {
 //2.rerender = when anything changes on code
 //3. unmountain = when something is removed from code
 
+//note: the only way a component can be re-rendered is when the state of that component or it's parent changes.
+
 //-------------------------- 25.useEffect Hook --------------------//
-//useEffect takes a function and will run every time the App rerenders if no dependency array declared
+//useEffect is a function that takes a function and will run every time the App rerenders if no dependency array declared
 //example of use effect with no dependency array
 function App() {
   useEffect(() => {
@@ -473,8 +476,8 @@ function App() {
   });
 } //every refresh logs "here"
 
-//second parameter of function useEffect takes is an array with value [name],anytime value declared on thus array changes then it will rerun useEffect
-//dependency array can take more than one value
+//the second parameter that function useEffect takes is an array with value [variable],anytime value of variable declared on this array changes then it will rerun useEffect
+//dependency array can take more than one value, if dependency array is empty it will run only on mount
 function App() {
   const [name, setName] = useState("Leticia");
   useEffect(() => {
@@ -492,8 +495,8 @@ function App() {
   const [age, setAge] = useState(0);
 
   useEffect(() => {
-    console.log("Age has changed", age); //age logging out the value
-  }, [age]); // [age] saying what change of value will trigger
+    console.log("Age has changed", age); //age = logging out the current value already updated
+  }, [age]); // [age] saying what change of value will trigger useEffect to rerun
 
   return (
     <div>
@@ -531,10 +534,10 @@ function App() {
 }
 
 //use case
-//removing the event listener everytime time the useEffect reruns
-//result: it won't log every little change on an input but finalresult when user click outside input
+//example removing the event listener everytime time the useEffect reruns
+//result: it won't log every little change on an input but final result when user click outside input
 //essentially removing the last run and updating it with most recent run
-//return function inside useEffect after 1st function
+//to achieve this need to set return function inside useEffect after 1st function
 function App() {
   const [name, setName] = useState("");
 
@@ -544,6 +547,8 @@ function App() {
     };
 
     document.addEventListener("click", handler);
+
+    //on rerun return will run first before code above,this is considered the cleanup function
     return () => {
       document.removeEventListener("click", handler);
     };
