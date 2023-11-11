@@ -560,16 +560,16 @@ function App() {
 }
 
 //-------------------------- 31. STRICT MODE --------------------//
-//strict mode is good for detecting and checking things
-//when using strict mode, the component will
+//strict mode is good for detecting and checking hidden bugs
+// using strict mode, the component will
 //1. mount
 //2.unmount simulation
 //3. then mount it again
-//this is only development tool to try detect hidden bugs on the code
+//this is only a development tool to try detect hidden bugs on the code
 //when deplying the site strict mode will not run
 
-//recommend keep strict mode enable
-//can remove the second log from strcit mode
+//recommended to keep strict mode enable
+//it is possible to remove the second log from strcit mode
 //1.go to settings into react dev tools
 //2. enable "hide logs during second render strict mode"
 
@@ -586,18 +586,18 @@ component runs twice but only renders once (like in the case of StrictMode) it w
 
 //-------------------------- 32.FETCHING DATA FROM API --------------------//
 //having the fetch inside a useEffect is better practice , so it runs only on mount
-//fetching the API
+//example simple fetching the API
 useEffect(() => {
   fetch("https://jsonplaceholder.typicode.com/users")
     .then((APIresponse) => APIresponse.json())
     .then((data) => console.log(data)); //
 }, []); //(10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
 
-//IMPORTANT!!!!  Waiting response from fetch to log API, catching an error and avoiding double mount due to strict mode
+//IMPORTANT!!!!  Wait response from fetch to log API, catching an error and avoiding double mount due to strict mode
 //when fetching need to make sure you have a loading state to track the API fetch
 // otherwise it can return undefined if API hasn't completely returned yet
 function App() {
-  //Setting the api data inside a state
+  //Setting useState to put the api data inside this variable
   const [users, setUsers] = useState();
   //creating the loading to track API return and avoid undefined return
   const [loading, setLoading] = useState(true);
@@ -606,17 +606,16 @@ function App() {
 
   //fetching the API
   useEffect(() => {
-    //loading set to true before fetching
-    setLoading(true);
-    setError(undefined); //can declare this to make sure error is empty before
-    const controller = new AbortController(); // object that allows you to abort one or more Web requests as and when desired.
+    setLoading(true); //loading set to true before fetching (because it starts loading)
+    setError(undefined); //can declare this to make sure error is initially empty
+    const controller = new AbortController(); // object that allows you to abort one or more Web requests when desired.
 
     fetch("https://jsonplaceholder.typicode.com/users", {
       signal: controller.signal,
     })
       .then((response) => {
         if (response.status === 200) {
-          //checking to see if response is true, .status === 200 means successful
+          //checking to see if response is true, .status === 200 means the request was successful
           return response.json(); //parsing/creating a json from API link response if successful
         } else {
           return Promise.reject(response); //if not successfull, we reject as an Error
@@ -659,6 +658,7 @@ function App() {
 }
 //-----------------------------------------------------------
 //SAME way to fetch but using a async / await | try / catch approach
+// code from course
 function App() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
