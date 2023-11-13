@@ -593,9 +593,39 @@ useEffect(() => {
     .then((data) => console.log(data)); //
 }, []); //(10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
 
+//basic useEffect fetch without catching errors
 //IMPORTANT!!!!  Wait response from fetch to log API, catching an error and avoiding double mount due to strict mode
 //when fetching need to make sure you have a loading state to track the API fetch
 // otherwise it can return undefined if API hasn't completely returned yet
+function App() {
+  const [users, setUsers] = useState();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    setLoading(true);
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((u) => JSON.stringify(u))
+      .then((data) => setUsers(data))
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  let jsx;
+  if (loading) {
+    jsx = <div> Loading...</div>;
+  } else {
+    jsx = users;
+  }
+  return (
+    <div>
+      <h1>Users</h1>
+      <h3> {jsx}</h3>
+    </div>
+  );
+}
+
+//fetching API and catching errors
 function App() {
   //Setting useState to put the api data inside this variable
   const [users, setUsers] = useState();
@@ -692,7 +722,7 @@ function App() {
     };
 
     fetchData();
-
+    //cleanup to abort fetch request and avoid fetching twice
     return () => {
       controller.abort();
     };
@@ -719,8 +749,21 @@ if (favoriteNumber !== null) {
 {
   favoriteNumber !== null && `My number is ${favoriteNumber}`;
 }
+{
+  return favoriteNumber < 5 && `My favorite number is ${favoriteNumber}`;
+}
+
 //can also declare based on favoriteNumber value, inline if statement (ternary operator)
-//syntax variable/statement to check ? code if true : code if false
+//syntax --- variable/statement to check ? code if true : code if false
+export function numberChecker({ favoriteNumber }) {
+  favoriteNumber != null
+    ? (favoriteNumber = <h1>my favorite number is {favoriteNumber}</h1>)
+    : (favoriteNumber = null);
+
+  return favoriteNumber;
+}
+
+//another example
 {
   favoriteNumber > 5
     ? `My fav number big ${favoriteNumber}`

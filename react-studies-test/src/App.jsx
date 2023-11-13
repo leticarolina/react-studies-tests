@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react";
+import { Counter } from "./Counter";
 
 function App() {
-  const [width, setWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    setWidth(window.innerWidth);
-  }, [width]);
-
-  return <div>{width}</div>;
+  return <Counter favoriteNumber={2} />;
 }
 
 //EXERCISE: create component called Counter

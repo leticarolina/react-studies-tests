@@ -1,12 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export function Counter() {
-  const [number, setNumber] = useState(0);
-  function incrementor() {
-    setNumber((n) => {
-      return n + 1;
-    });
-  }
+export function Counter({ favoriteNumber }) {
+  favoriteNumber < 5
+    ? (favoriteNumber = <h1>my favorite number is {favoriteNumber}</h1>)
+    : (favoriteNumber = null);
 
-  return <h1 onClick={incrementor}>{number}</h1>;
+  return favoriteNumber;
 }
