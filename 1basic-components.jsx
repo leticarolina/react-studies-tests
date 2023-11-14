@@ -783,13 +783,14 @@ export function numberChecker({ favoriteNumber }) {
 //-------------------------- 35. RENDERING LISTS--------------------//
 //possibility of rendering elements that are inside an array
 function App() {
-  //this is an array usestate
+  //this is a usestate that holds an array of objects
+  //crypto.randomUUID() generate a random unique ID
   const [items, setItems] = useState([
     { id: crypto.randomUUID(), name: "Item 1" },
     { id: crypto.randomUUID(), name: "Item 2" },
   ]);
 
-  //function to create new object
+  //function to create new object and append to useState
   function addItem() {
     setItems((currentItems) => {
       //and return prev objects plus the new one created
@@ -813,7 +814,7 @@ function App() {
   );
 }
 
-//TIP: if case above the new Item name + input is a separate component to be imported, the key has to be set when calling the component to render
+//TIP: if new Item + input is a separate component to be imported, the key has to be set when calling the component to render
 {
   items.map((item) => {
     return (
@@ -825,7 +826,7 @@ function App() {
 }
 
 //-------------------------- 36. FRAGMENTS --------------------//
-//a way react implemented to return multiple elements without having to wrap them inside a div
+//a way react implemented to return multiple elements without having to wrap them inside html element like a div
 //fragment is an empty element that allows to wrap multiple elements inside
 {
   <div>
