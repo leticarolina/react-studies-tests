@@ -249,13 +249,13 @@ function App() {
 // }
 
 //-------------------------- 39. SPREAD PROPS --------------------//
-//spread props is a way to get multiple prop keys of an object withpout having to write one by one
+//spread props is a way to get multiple prop keys of an object without having to write one by one
 
 //Most often if you spread an object it is because you want to pass most or all of it to the component and not just one or two props.
-//IMPORTANT: can only take primeray keys of objects, if nested key cannot be taken by spread props need to declare separetely
+//IMPORTANT: can only take primary keys of objects, if nested key, cannot be taken by spread props need to declare separetely
 
-//for the code under there is an API with users, that containe id, name, phone,etc
-//component file
+//for the code under there is an API with users, these users contain keys of id, name, phone,etc
+//example component file, creating component+props
 export function Component({ name, phone }) {
   return (
     <li>
@@ -277,7 +277,7 @@ function App() {
           //mapping all the users into separate person
           console.log(person);
           return <Component key={person.id} {...person} />; // {...person} tells to match every prop the Component is returning with the keys "person" object mapped has.
-          //essentially by spreading {...person} it takes every single property that is on users and pass it to User Componenet
+          //essentially by spreading {...person} it takes every single property that matchs with users API and pass it to User Componenet
         })}
       </ul>
     </>
@@ -842,8 +842,9 @@ function App() {
   </>;
 }
 
-//if you need to declare a key like previous lesson  key={item.id} the empty fragment cannot take
-//need to use element as React.Fragment and import React on file, can also write only Fragment and import Fragment
+//if you need to declare a key like previous lesson  key={item.id} the empty fragment cannot take it
+//need to use element as React.Fragment and import "React" on file
+// can also write only Fragment and import Fragment
 {
   <React.Fragment key={item.id}>
     <button>Click</button>
@@ -852,10 +853,11 @@ function App() {
 }
 
 //----------------------- 40. RENDER RAW HTML --------------------//
-//a way to render html that is on a string inside react
+//a way to render html that is on a string format inside react
 
 //html in a string to be rendered
-const CUSTOM_URL = `<h1>Leticia Azevedi</h1>`;
+const CUSTOM_URL = `<h1>Leticia Azevedo</h1>
+<div>this is my name</div>`;
 
 function App() {
   //syntax dangerouslySetInnerHTML={{ __html: variable }}
