@@ -856,7 +856,7 @@ function App() {
 //a way to render html that is on a string format inside react
 
 //html in a string to be rendered
-const CUSTOM_URL = `<h1>Leticia Azevedo</h1>
+const CUSTOM_URL = `<h1>Leticia Carolina Azevedo</h1>
 <div>this is my name</div>`;
 
 function App() {
