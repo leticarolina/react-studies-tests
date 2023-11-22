@@ -95,7 +95,7 @@ function App() {
 useMemo(() => {
   //code to run if dependency array has changed
 }, [dependencyArray]);
-
+g;
 //this is for performance gains and is all about memoization
 //The useMemo Hook only runs when one of its dependencies update.
 
@@ -123,5 +123,53 @@ function App() {
       {/* when button is clicked the count will add +1 and since count changed, the useMemo will run too  */}
       <button onClick={() => setCount(count + 1)}>Increment Count</button>
     </div>
+  );
+}
+
+//-------------------------- 44. UseCallback Hook --------------------//
+//The useMemo and useCallback Hooks are similar.
+//Main difference is that useMemo returns a memoized value and useCallback returns a memoized function
+
+//on this code, useEffect + useCallback will only run when the name changes, the age change won't trigger any of these
+function App() {
+  const [name, setName] = useState("");
+  const [age, setAge] = useState(0);
+
+  //you will declare useCallback as a variable with the function you want to memoize
+  const printName = useCallback(() => {
+    console.log(`Name: ${name}`);
+  }, [name]);
+
+  useEffect(() => {
+    console.log("useEffect in Effect");
+    printName();
+  }, [printName]);
+
+  return (
+    <>
+      {" "}
+      <label>
+        {" "}
+        Name:
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+        />
+      </label>
+      <label>
+        {" "}
+        Age:
+        <input
+          type="number"
+          value={age}
+          onChange={(e) => {
+            setAge(e.target.value);
+          }}
+        />
+      </label>
+    </>
   );
 }
