@@ -90,7 +90,7 @@ function App() {
   );
 }
 
-//-------------------------- 44. UseMemo Hook --------------------//
+//-------------------------- 45. UseMemo Hook --------------------//
 //syntax
 useMemo(() => {
   //code to run if dependency array has changed
@@ -126,7 +126,7 @@ function App() {
   );
 }
 
-//-------------------------- 44. UseCallback Hook --------------------//
+//-------------------------- 47. UseCallback Hook --------------------//
 //The useMemo and useCallback Hooks are similar.
 //Main difference is that useMemo returns a memoized value and useCallback returns a memoized function
 
@@ -138,7 +138,7 @@ function App() {
   //you will declare useCallback as a variable with the function you want to memoize
   const printName = useCallback(() => {
     console.log(`Name: ${name}`);
-  }, [name]);
+  }, [name]); //The useCallback Hook only runs when one of its dependencies update.
 
   useEffect(() => {
     console.log("useEffect in Effect");
@@ -173,3 +173,103 @@ function App() {
     </>
   );
 }
+
+//-------------------------- 48. Custom Hooks --------------------//
+//react knows that any hook will start with "use" in the beggining
+//for custom hoos you can create any name after "use" keyword
+
+function App() {
+  //the value here is useInputValue the function
+  const nameInput = useInputValue("");
+  //creating variable, the value is the function useToogle();
+  const [isDarkMode, toogleDarkMode] = useToogle();
+
+  return (
+    <div
+      style={{
+        background: isDarkMode ? "#333" : "white",
+        color: isDarkMode ? "white" : "#333",
+      }}
+    >
+      <label>
+        Name:
+        <input {...nameInput} />
+      </label>
+      <br />
+      <br />
+      {/* onclick will call toogleDarkMode to change isDarkMode variable */}
+      <button onClick={toogleDarkMode}>Toogle Dark Mode</button>
+    </div>
+  );
+}
+
+function useInputValue(initialValue) {
+  const [value, setValue] = useState(initialValue);
+  return {
+    value,
+    onChange: (e) => setValue(e.target.value),
+  };
+}
+function useToogle(initialValue) {
+  const [value, setValue] = useState(initialValue);
+
+  //the function itself that will toogle the dark mode
+  function toogle() {
+    setValue((currentValue) => !currentValue);
+  }
+
+  return [value, toogle];
+}
+
+//-------------------------- 55. Form Basics--------------------//
+function App() {
+  const [inputValue, setInputValue] = useState();
+
+  function preventDefault(e) {
+    // the onSubmit function called need to have the e.preventDefault() declared
+    e.preventDefault();
+  }
+
+  return (
+    <>
+      {/* if using a form need to declare onSubmit={function here} */}
+      <form onSubmit={preventDefault} id="new-form">
+        <label htmlFor="name">Name: </label>
+        <input
+          type="text"
+          id="name"
+          value={inputValue}
+          placeholder="Full Name"
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+        <br />
+        <br />
+
+        {/* selecting the default value of options  <select value="2"> cannot change to another number*/}
+        {/* to be uncontrolled the value cannot be changed, known declared as defaultValue="2" */}
+        <label htmlFor="pick">Pick a number: </label>
+        <select id="pick">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+        <br />
+        <br />
+        <textarea
+          placeholder="I am the placeholder of textarea"
+          rows="3"
+        ></textarea>
+        <br />
+        <br />
+        {/* Defaultchecked will make checkbox already checked on load*/}
+        <input id="agree" type="checkbox" defaultChecked />
+        <label htmlFor="agree">Agree with conditions</label>
+        <br />
+        <br />
+        <button>Add Todo</button>
+      </form>
+    </>
+  );
+}
+
+//-------------------------- 56. One way Data Flow--------------------//
