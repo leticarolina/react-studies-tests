@@ -27,7 +27,7 @@ function App() {
 //code under is a useRef, "leticia" is the default value and "letiRef" is the object variable to access it
 //all this code is doing is wrapping a particular value and putting inside the "letiRef" object
 const letiRef = useRef("leticia");
-//to access the value need to target as object with "current" key
+//to access the value need to target as object with ".current" key
 console.log(letiRef); //{current: 'leticia'} returns an object
 console.log(letiRef.current); //leticia
 
@@ -38,10 +38,11 @@ function App() {
   console.log(letiRef.current); //useRef value has been changed
 }
 
-//even tho value is bring chamged to Math.randon and useEffect has a console.log of re-render the component will not rerender
+//about next code: even tho value is being changed to Math.randon and useEffect has a console.log of re-render the component will not rerender
 //hook is useful when you want value to be tied to the component but not the rerendering
 function App() {
   const letiRef = useRef("leticia");
+
   useEffect(() => {
     console.log("Re-rendered");
   });
@@ -67,7 +68,7 @@ function App() {
 }
 
 //ACCESSING HTML ELEMENT
-//usinguseRef to get reference from a html element
+//using useRef to get reference from a html element
 //every html element has a "ref" prop
 function App() {
   const [name, setName] = useState();
@@ -77,6 +78,7 @@ function App() {
     console.log(inputRef.current); //<input type="text" value="">
     console.log(inputRef.current.value); //will log value inside input
   }, [name]);
+
   return (
     <input
       //setting the ref to be "inputRef"
@@ -92,16 +94,16 @@ function App() {
 
 //-------------------------- 45. UseMemo Hook --------------------//
 //syntax
-useMemo(() => {
+const variable = useMemo(() => {
   //code to run if dependency array has changed
 }, [dependencyArray]);
-g;
+
 //this is for performance gains and is all about memoization
 //The useMemo Hook only runs when one of its dependencies update.
 
 //1. Memoization
-//When you have a computation that might be slow or time-consuming to compute, but its result only changes when certain inputs (dependencies) change, useMemo can be used to memoize that computation.
-//for example if you have a very slow code to filter o map smt, this can de declared inside useMemo
+//When you have a computation that might be slow or time-consuming , with useMemo its result only changes when certain inputs (dependencies) change
+//for example if you have a very slow code to filter or map smt, this can de declared inside useMemo
 //useMemo returns a memoized value
 
 //2.Avoids Unnecessary Recalculation
@@ -110,7 +112,7 @@ g;
 function App() {
   const [count, setCount] = useState(0);
 
-  // A function that doubles the count value (pretend is slow)
+  // A function that doubles the count value (pretend its slow)
   const doubleCount = useMemo(() => {
     console.log("Recalculating doubleCount...");
     return count * 2;
@@ -138,7 +140,7 @@ function App() {
   //you will declare useCallback as a variable with the function you want to memoize
   const printName = useCallback(() => {
     console.log(`Name: ${name}`);
-  }, [name]); //The useCallback Hook only runs when one of its dependencies update.
+  }, [name]); // useCallback Hook only runs when one of its dependencies update.
 
   useEffect(() => {
     console.log("useEffect in Effect");
@@ -222,6 +224,9 @@ function useToogle(initialValue) {
 }
 
 //-------------------------- 55. Form Basics--------------------//
+//-------------------------- 55. Form Basics--------------------//
+//-------------------------- 55. Form Basics--------------------//
+
 function App() {
   const [inputValue, setInputValue] = useState();
 
@@ -273,3 +278,48 @@ function App() {
 }
 
 //-------------------------- 56. One way Data Flow--------------------//
+//one way data flow =  data can only flow from parent to children and not the other way around
+
+//https://courses.webdevsimplified.com/view/courses/react-simplified-beginner/1764773-forms/5836245-56-one-way-data-flow
+
+//-------------------------- 57. useState vs useRef--------------------//
+//use case to use Ref instead of State
+
+function App() {
+  const nameRef = useRef();
+  // const [name, setName] = useState("");
+
+  //component is rerendering everytime the input changes and we don't need that
+  useEffect(() => {
+    console.log("render");
+  });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const name = nameRef.current.value;
+    if (name === "") return;
+
+    alert(`Name: ${name}`);
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="name"> Name: </label>
+      <br />
+      {/* uncontrolled input with useRef, wont cause component to rerender everytime */}
+      <input type="text" ref={nameRef} id="name" />
+      {/* controlled input causing component to rerender */}
+      {/* <input
+        type="text"
+        id="name"
+        value={name}
+        onChange={(e) => {
+          setName(e.target.value);
+        }}
+      /> */}
+      <br />
+      <br />
+      <button>Alert Name</button>
+    </form>
+  );
+}

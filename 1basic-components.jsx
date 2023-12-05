@@ -851,7 +851,7 @@ function App() {
     <input type="text"></input>
   </React.Fragment>;
 }
-
+s;
 //----------------------- 40. RENDER RAW HTML --------------------//
 //a way to render html that is on a string format inside react
 
