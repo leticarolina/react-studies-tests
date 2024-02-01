@@ -9,7 +9,7 @@
 //to start vite after run
 //npm run dev > will start vite
 
-import { render } from "react-dom";
+// import { render } from "react-dom";
 
 // Hotfix
 //ERROR when rerunning vite app
@@ -19,52 +19,69 @@ import { render } from "react-dom";
 //3. run command >  npm install
 //4. run command> npm run dev
 
+//start project on  next after
+// pwd
+// cd path
+//npm run dev
+
 //--------------------- 9. THINKING IN COMPONENTS----------------//
 //https://courses.webdevsimplified.com/view/courses/react-simplified-beginner/1764768-basic-components/5598791-09-thinking-in-components
-//if you change one and want all of the similar to change UI too then it should be on a component
+//if you change style of thing and want other similar elements to change UI too then it should be on a component
+//example list items from a UL
+//cards
 
 //-------------------------- 10. JSX BASICS --------------------//
 //jsx is a different syntax of writing html code to your page
 
 //DIFFERENCES BETWEEN HTML AND JSX SYNTAX
-//1. everything declared in the html element will be CamelCase instead of using-dash, unless dealing with some data attributes or aria(?)
+//1. everything declared in the html/react element will be CamelCase instead of using-dash, unless dealing with some data attributes or aria(?)
+// html
+<label for="favorite-drink"> Gin Tonic</label>;
+//react
+<h1 htmlFor="favoriteDrink"> Gin Tonic</h1>;
 
 // 2. to declare a class inside an element, we cant use the class keyword need to use ClassName instead
 function App() {
   return <h1 className="hi"> Hello World </h1>;
 }
+
 //3. the keyword for on label need to be declared as htmlFor
 function App() {
   return <label htmlFor="label"> Hello World </label>;
 }
-//3. anything that is not a string will have to be in curly braces
+//3. anything that is not a string will have to be in curly brackets
 //example css style are passed as object
 <h1 style={{ background: "red" }}>hello World</h1>;
 //background-color again will have to refer to camelCase
 <h1 style={{ backgroundColor: "red" }}>hello World</h1>;
-//4. whenever you have curly brackets inside jsx will execute javascript code
+
+//4. whenever you have curly brackets inside jsx, it will execute javascript code
 return <h1>{2 + 4}</h1>; //6
-//in html some elements does't need a closing tag, in jsx every tag needs to be closed even img , input
+
+//5. in html some elements does't need a closing tag, in jsx every element needs to be closed even img , input
+//with exception of components
+
+//6. undefined, null and false inside { } wont return ANYTHING on jsx, can be placeholder
+
+//7.things you can return from a component string, number, array
 
 //EXERCISE
 //create a div with the class large and id largeDiv
-return (
-  <div className="large" id="largeDiv">
-    {" "}
-    hello World
-  </div>
-);
-//remove the text and add a Label with the 'for' property , set to inputID
+// add a Label with the 'for' property , set to inputID
 //add an input with id inputID, type number , value 3
-return (
-  <div className="large" id="largeDiv">
-    <label htmlFor="inputID">Hello world</label>
-    <input id="inputID" type="number" value={3} />
-  </div>
-);
+function App() {
+  return (
+    <div className="large" id="largeDiv">
+      <label htmlFor="inputID">
+        Label
+        <input type="number" id="inputID" value={3} />
+      </label>
+    </div>
+  );
+}
 //value in the code above cannot be changed, if you want value to change need to declare defaultValue instead of value
 
-//TIP
+//very use case for react, create variables for html
 //can declare js variable,  set the value to html code,  and then use the {variable}
 const myInput = <input id="inputID" type="number" value={3} />;
 return (
@@ -73,16 +90,23 @@ return (
     {myInput}
   </div>
 );
-//if you're passing more than one element like case above with label/input it HAS to be wrapped on smt like a <div> or You can wrap multiple children in <></> to avoid extra nodes like divs.
-//things you can return from a component string, number, array
-// undefined, null and false inside { } wont return ANYTHING on jsx, can be placeholder
+//if passing more than one element like case above with label/input it HAS to be wrapped on smt like a <div> or You can wrap multiple children in <></> to avoid extra nodes like divs.
 
+//the way it works for main function and others components
+function App() {
+  // JavaScript code is not placed after the return statement
+  // here goes all the javascript code
+  return;
+  //here goes all html / components return
+}
 //-------------------------- 11. CREATING COMPONENTS --------------------//
 //components should start with capital letter and be eg.: CamelCase
+//good practice name of the component file be the same as function name
 
-/*function component 
-1.create a new File,recommend to name the file the same as component name
-2. example code on the component file: 
+/*function component steps
+1.create a new File,name the file the same as function name will be
+2.code on the component file need to return smt from the function, example code on the component file: 
+//all this code is doing is returning a html login for a list of items 
 export function TodoList() {
   return (
     <ul>
@@ -92,9 +116,10 @@ export function TodoList() {
       <li>item 4</li>
     </ul>
   );
-} //all this code is doing is returning a list of items 
-3. need to export code from component file and import to the main one using import 
-4. how to use component code on the main file 
+} 
+3. need to export code from component file, and then import to the main one using import
+//import { TodoList } from "@/components/ToDoList";
+4. how to use component imported on the main file 
  return (
       <TodoList />
   )*/
@@ -110,6 +135,9 @@ export function TodoList() {
 //   return <MyName />;
 // }
 
+//TIP: components can be defined on the same file but for better practice create a new file
+//IMPORT SYNTAX: when doing export the import will have curly brackets, when doing export deafult the import has no curly brackets
+
 /*class component works the same as fucntion component on main file
 difference is on the component file
 //code on component file 
@@ -120,9 +148,6 @@ export class TodoListClass extends React.Component {
   }
 }
 */
-
-//TIP: components can be defined on the same file but for better practice create a new file
-//IMPORT SYNTAX: when doing export the import will have curly brackets, when doing export deafult the import has no curly brackets
 
 //-------------------------- 11. PROPS > PROPERTIES --------------------//
 //Example of property
