@@ -155,7 +155,7 @@ export class TodoListClass extends React.Component {
 //1. creating properties means the component function will take a parameter(s) and we access this parameter as we access object in javascript
 //example on the component file
 export function MyName(props) {
-  // props is a property crated, indicates the compo will have props
+  // props is a property crated, indicates the function component will have props
   return (
     <h1>
       {/* can choose any name for prop holding value, .name .age will be the key to access value on main file as name="prop" */}
@@ -188,6 +188,7 @@ function App() {
   return <TodoList title="alo" subtitle="sub" />; //will render "alo" as h1 and "sub" as h2
 }
 
+//getting into the props
 //for the property that goes into the function, it can be destructed to avoid writing props.something all the time
 //this will have same exact output as previous example
 export function TodoList({ title, subtitle }) {
@@ -203,10 +204,11 @@ function App() {
   return <TodoList title="alo" subtitle="sub" />;
 }
 
-//can also pass a boolean , if no value passed on the prop it will be set to TRUE as default
+//can also pass a boolean , if no value passed to the prop when it's called, it will be set to TRUE as default
+//component file
 export function MyName({ name, age, isProgrammer }) {
   {
-    console.log("Is programmer?", isProgrammer); //undefined, bcs not defined as boolean yet
+    console.log("Is programmer?", isProgrammer); //for now undefined, bcs it's not defined as boolean yet
   }
   //props waiting to be declared when called compo on main file code
   return (
@@ -221,7 +223,7 @@ function App() {
 }
 
 //how to pass along a children
-//children is be able to set value <>inside</>  of the component
+//children means being able to set value <>inside</>  of the component when calling it
 //on the component file prop (HAS TO BE children, other prop name won't work)
 export function MyName({ children }) {
   return <h1>{children}</h1>;
@@ -231,14 +233,13 @@ function App() {
   return (
     <div>
       {/* on the children prop you will change it's value like syntax below, the h1 element could have also been declared here but children must be wrapped on smt on the component */}
-
       <MyName>Leticia Azevedo</MyName>
     </div>
   );
 }
 
 //EXERCISE - create TodoListItem Componenet
-//props: will be children with name, isComplete boolean
+//props will be: children with name, isComplete boolean
 //render out checkbox, (checked if complete)
 //label will be (children value)
 export function TodoList({ children, isComplete }) {
@@ -254,14 +255,14 @@ function App() {
   return (
     <div>
       <TodoList isComplete>todo item 1</TodoList>
-      {/* checkbox here wont be checked */}
+      {/* checkbox here wont be checked bcs was manually declared as false*/}
       <TodoList isComplete={false}>todo item 2</TodoList>
     </div>
   );
 }
 //logic behind props: anything you want to change can be defined on the props,
 //and anything you want to keep the same can be defined on the component
-//TIP: props can have a default value eg: TodoList({ children, isComplete = false }), so if you don't declare value on main file if will be auto set to false
+//TIP: props can have a default value eg: TodoList({ children, isComplete = false }), so if you don't declare value on main file it will be auto set to false
 
 //with class components , the differences
 // render() {
@@ -279,7 +280,7 @@ function App() {
 //Most often if you spread an object it is because you want to pass most or all of it to the component and not just one or two props.
 //IMPORTANT: can only take primary keys of objects, if nested key, cannot be taken by spread props need to declare separetely
 
-//for the code under there is an API with users, these users contain keys of id, name, phone,etc
+//for the code under there is an API file with users, these users contain object keys of id, name, phone,etc
 //example component file, creating component+props
 export function Component({ name, phone }) {
   return (
