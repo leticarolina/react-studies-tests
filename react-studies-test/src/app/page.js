@@ -1,6 +1,7 @@
 "use client"; // This is a client component  👈🏽
 import { useState } from "react";
 import { Counter } from "@/components/Counter";
+import { NameAndAge } from "@/components/NameAndAge";
 
 export default function Home() {
   const [person, setPerson] = useState({
@@ -14,10 +15,5 @@ export default function Home() {
       return { ...currentobj, name: "Fernanda", age: 1993 };
     });
   }
-  return (
-    <h1 onClick={change}>
-      Hello my name is {person.name}, I am {person.nationality} and was born in{" "}
-      {person.year}.
-    </h1>
-  );
+  return <NameAndAge />;
 }
