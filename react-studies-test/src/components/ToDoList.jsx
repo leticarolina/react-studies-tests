@@ -1,9 +1,8 @@
-export function ToDoList() {
+export function ToDoList({ children, isComplate }) {
   return (
-    <ul className="ms-8 ">
-      <li>Clean</li>
-      <li>Make bed</li>
-      <li>Wash clothes</li>
-    </ul>
+    <div>
+      <label htmlFor="todo">{children}</label>
+      <input type="checkbox" checked={isComplate} />
+    </div>
   );
 }

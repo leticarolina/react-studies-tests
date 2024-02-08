@@ -1,3 +1,7 @@
-export default function PrintName() {
-  return <h1>Leticia Azevedo</h1>;
+export default function PrintName({ name, year }) {
+  return (
+    <h1>
+      {name} {year}
+    </h1>
+  );
 }

@@ -65,6 +65,13 @@ return <h1>{2 + 4}</h1>; //6
 
 //7.things you can return from a component string, number, array
 
+//8. JavaScript code is typically written within the body of the function component before the return statement.
+//However, you can also write some JavaScript code after the return statement if you enclose it within curly braces {}.
+
+//9. (IMPORTANT) After the return statement in a React component, you cannot write arbitrary JavaScript statements or code blocks.
+//Examples CANNOT do after return: declare a function, block statements (if/else, for loop, while loop), assign a variable {myVar = 42}, declare objects or array,
+//In general, you should only include JSX expressions, JavaScript expressions, or function calls inside the return. Any complex JavaScript logic, such as conditionals or loops, should be performed outside of the return statement.
+
 //EXERCISE
 //create a div with the class large and id largeDiv
 // add a Label with the 'for' property , set to inputID
@@ -105,8 +112,9 @@ function App() {
 
 /*function component steps
 1.create a new File,name the file the same as function name will be
-2.code on the component file need to return smt from the function, example code on the component file: 
-//all this code is doing is returning a html login for a list of items 
+2.the code on the component file need to return smt from the function otherwise the component won't return anything when called.
+// example code on the component file: 
+//all this code is doing is returning a html logic for a list of items 
 export function TodoList() {
   return (
     <ul>
@@ -117,7 +125,7 @@ export function TodoList() {
     </ul>
   );
 } 
-3. need to export code from component file, and then import to the main one using import
+3. this function component need to be exported, and then imported to the main file using 'import'
 //import { TodoList } from "@/components/ToDoList";
 4. how to use component imported on the main file 
  return (
@@ -159,7 +167,7 @@ export function MyName(props) {
   return (
     <h1>
       {/* can choose any name for prop holding value, .name .age will be the key to access value on main file as name="prop" */}
-      {props.name} {props.age}
+      {props.name} {props.year}
     </h1>
   );
 }
@@ -168,8 +176,8 @@ function App() {
   return (
     <div>
       {/*this way can use the property component twice and give different info*/}
-      <MyName name="leti" age={26} /> {/*Leti 26 */}
-      <MyName name="luca" age={31} /> {/*Luca 31*/}
+      <MyName name="leti" year={1997} /> {/*Leti 1997 */}
+      <MyName name="luca" year={1992} /> {/*Luca 1992 */}
     </div>
   );
 }
@@ -204,7 +212,7 @@ function App() {
   return <TodoList title="alo" subtitle="sub" />;
 }
 
-//can also pass a boolean , if no value passed to the prop when it's called, it will be set to TRUE as default
+//can also create a boolean , if no value passed to the prop when it's called, it will be set to TRUE as default
 //component file
 export function MyName({ name, age, isProgrammer }) {
   {
@@ -223,7 +231,7 @@ function App() {
 }
 
 //how to pass along a children
-//children means being able to set value <>inside</>  of the component when calling it
+//children is a special prop that means being able to set value <>inside</>  of the component when calling it
 //on the component file prop (HAS TO BE children, other prop name won't work)
 export function MyName({ children }) {
   return <h1>{children}</h1>;
@@ -260,7 +268,7 @@ function App() {
     </div>
   );
 }
-//logic behind props: anything you want to change can be defined on the props,
+//logic behind props: anything you want to change value can be defined on the props,
 //and anything you want to keep the same can be defined on the component
 //TIP: props can have a default value eg: TodoList({ children, isComplete = false }), so if you don't declare value on main file it will be auto set to false
 
@@ -311,6 +319,7 @@ function App() {
 }
 
 //-------------------------- 13. DECLARATIVE VS IMPERATIVE --------------------//
+//React is declarative //JS im imperative
 /*imperative --> focused on HOW it is to be done; 
 declarative --> specifying what you want.
 A good analogy is imagine you go to a restaurant with your partner. 
@@ -325,43 +334,79 @@ or what style to add to an element. React works in the same manner.
 
 //-------------------------- 14. IMPORTING NON-JS FILE --------------------//
 //how to import things that aren't normal javascript or jsx
-//on the main file of your code (App.jsx) can use keyword import
+//on the main file of your code can use keyword 'import'
 
-//example for impoting CSS , css need to be imported on the Main file where the restrictMode is or App.jsx
+//example for impoting CSS , css need to be imported on the Main file where the restrictMode is
 // import "./styles.css"  (it won't be imported on html head)
 
 //example for importing Json
-//import user from "./user.json" (then need to declare further if want to use the string eg. {JSON.stringfy{user}}  )
+//import user from "./user.json"
+//(then need to declare further if want to use the string eg. {JSON.stringfy{user}}  )
 
 //example for importing image
 //import img from "./NameOfFile.png"
-//using the imgae
-<img src={img}></img>;
+//using the image
+{
+  /* <img src={img}></img>; */
+}
 
 //-------------------------- 17. useState Hooks --------------------//
-//state is data that can change over time, will be updated, and whenever that data changes you wanna re-render your component
+//state hook is data that can change over time, will be updated, and whenever that data changes you wanna re-render your component
 //-- hooks will always be placed first on the code above the return
+//remember to import hook in order to use it import {use}
 
-//breaking out a useState
+//breaking down a useState
 function App() {
-  //declaring the useState as a variable but name of the variable is like an array with 2 values
-  //the setAge index we will use to update the age value, it can be any variable name but standart is the update variable start with set
-  const [age, setAge] = useState(26); //default is set to 26
-  console.log("current", age); // current 26
-  //function to update the value, setting setAge to 27, will override default value
+  //declaring the useState as a variable - name of the variable is like an array with 2 values
+  //the second index, setAge is the one to update the age value, it can be any variable name but standart is the update variable start with keyword set
+  const [age, setAge] = useState(30); //default value is set to 30
+  console.log("current", age); // current 30
+  //function to update the value, setting age to 31 using setAge, this will override default value
   function newAge() {
-    setAge(27);
+    setAge(31);
   }
   //onclick age will turn to 27, when update state variable it reruns the entire componenet > function App() with the new value set
-  return <h2 onClick={newAge}> Next age {age} </h2>; //Next age 27
+  //calling newAge function does NOT need the curly brackets otherwise will set value of onClick to what newAge returns.
+  return <h2 onClick={newAge}> Next age {age} </h2>; //Next age 31
+}
+
+//changing 2 values at the same time using useState
+function App() {
+  const [name, setName] = useState("Leticia");
+  const [year, setYear] = useState(); //no default value
+  const [hobby, setHobby] = useState();
+
+  function changeName() {
+    setName("Leti");
+    setYear(1997);
+    setHobby("swimming");
+  }
+  return (
+    <h1 onClick={changeName}>
+      {" "}
+      My nickname is: {name}, I was born in {year}, my hobby is: {hobby}
+      {/* age and hobby values will not show up on page until h1 is clicked, because they do NOT have a default value*/}
+    </h1>
+  );
 }
 
 //more complex things of useState
 
+//if passing useState value as function to return this value can slow down app
+function App() {
+  const [age, setAge] = useState(getter());
+  function getter() {
+    //really slow code
+    console.log("I will run every time the component re-renders");
+    return 30;
+  }
+  //function will slow down the app since everytime state changes the getter will be called with all slow code inside
+}
+
 //if you a pass a function to useState instead of a value, it gets the value of the function once and then never run it again
 function App() {
   const [age, setAge] = useState(() => {
-    return 26;
+    return 30;
   });
 }
 //same if pass a function as value of useState and not call it with ()
@@ -369,7 +414,7 @@ function App() {
   const [age, setAge] = useState(getter); // //if using getter() it will call the function every time it re-renders
   function getter() {
     console.log("hi"); //will log only on mount bcs no ()
-    return 27;
+    return 30; //default age is only on mount
   }
 
   function newAge() {
@@ -383,44 +428,39 @@ function App() {
   );
 }
 
-//changing 2 values at the same time using useState
-function App() {
-  const [name, setName] = useState("Leticia");
-  const [age, setAge] = useState();
-  const [hobby, setHobby] = useState();
-
-  function changeName() {
-    setName("Leti");
-    setAge(26);
-    setHobby("swimming");
-  }
-  return (
-    <h1 onClick={changeName}>
-      {" "}
-      My nickname is: {name}, my age is {age}, my hobby is: {hobby}
-      {/* age and hobby will not show up until h1 is clicked, because useState does NOT have a defaukt value*/}
-    </h1>
-  );
-}
-
-//if you are setting a value that depends on the previous or the current value of the state
-//then need to use the function version of set useState
-// in other words: anytime you need the current state to update the new setstate you should always use the function version.
+//if you are setting a value that depends on the previous or the setAge value to change, need to use the function version of set useState
+// in other words: anytime you need the NEW state to update based on the current setState you should always use the function version.
 //However, in case you don't care about it or new value is not dependent on the previous value, can set value normally without function
 function newAge() {
   //this won't work
-  setAge(age + 1);
-  setAge(age + 1); // setting a value that depends on the previous to add +1
+  setAge(age + 1); // here it works , will make age + 1
+  setAge(age + 1); // trying to set a value that depends on the previous change to add +1 (this won't work)
 
   //values will have to be set as functions
-  //fucntion will take the current value and add one more
+  //function will take the current value and add one more
   setAge((current) => {
     return current + 1;
   });
-  //fucntion will take the current value and add one more
+  //this function will take the current latest value and add one more
   setAge((current) => {
     return current + 1;
   });
+}
+
+//understanding how the useState is being updated
+//*The new value from useState doesn't take effect unitl next render
+function Home() {
+  const [count, setCount] = useState(0);
+  function counter() {
+    //function running
+    console.log(count); //0
+    setCount(count + 1); //updated count variable, actually updating value only for the next render
+    console.log(count); //0
+    //the reason for 0 twice is the new value won't be assigned to the State variable yet
+    //it updates the next value for the next time the component runs
+    //until the next time component re-renders value will stay the same even tho it has changed on the interface
+  }
+  return <div onClick={counter}>{count}</div>;
 }
 
 //EXERCISE: create component called Counter
@@ -436,7 +476,7 @@ function App() {
   return <h1 onClick={addCounter}>{counter}</h1>;
 }
 
-//creating a separate file for the component
+//creating a component with the entire logic and useState
 import { useState } from "react";
 export function AddCounter() {
   const [counter, setCounter] = useState(0);
@@ -449,24 +489,35 @@ export function AddCounter() {
 
   return <h1 onClick={handleClick}>{counter}</h1>;
 }
-//original file
+//only rendering on the original file
 import { AddCounter } from "./AddCounter";
 function App() {
   return <AddCounter />;
 }
 
 //can also pass an object inside useState
-function App() {
-  const [person, setPerson] = useState({ name: "leticia ", age: 26 });
+export default function Home() {
+  const [person, setPerson] = useState({
+    name: "Leticia",
+    year: 1997,
+    nationality: "Brazilian",
+  });
+
   function change() {
-    setPerson({ name: "leti ", age: 25 });
-    // if you don't redeclare the object key here it wont be returned, because this syntax is creating a brand new object
+    //need to create a brand new object to change values
+    setPerson({ name: "Fernanda", year: 1993 });
+    // if you don't redeclare the object key here, it wont be returned anything
+    //because this syntax is creating a brand new object
+
+    //returning the 'same' object and changing only some keys
+    setPerson((currentobj) => {
+      return { ...currentobj, name: "Fernanda", year: 1993 };
+    });
   }
   return (
     <h1 onClick={change}>
-      {" "}
-      hi {person.name}
-      {person.age}
+      Hello my name is {person.name}, I am {person.nationality} and was born in{" "}
+      {person.year}.
     </h1>
   );
 }
