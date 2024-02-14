@@ -370,6 +370,17 @@ function App() {
   return <h2 onClick={newAge}> Next age {age} </h2>; //Next age 31
 }
 
+function App() {
+  const [age, setAge] = useState(30);
+  console.log("current", age); // current 30
+
+  function newAge() {
+    setAge(31);
+  }
+
+  return <h2 onClick={newAge}> Next {age} </h2>; //Next 31
+}
+
 //changing 2 values at the same time using useState
 function App() {
   const [name, setName] = useState("Leticia");
@@ -404,6 +415,7 @@ function App() {
 }
 
 //if you a pass a function to useState instead of a value, it gets the value of the function once and then never run it again
+//he function that useState accepts needs to be syncronous.
 function App() {
   const [age, setAge] = useState(() => {
     return 30;

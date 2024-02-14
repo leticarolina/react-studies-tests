@@ -4,7 +4,7 @@
 // Create a plus and minus button that will update the age state and display the state between the two buttons
 // Display the string My name is {name} and I am {age} years old in your JSX
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export function NameAndAge() {
   const [name, setName] = useState("");
   const [year, setYear] = useState(1997);
@@ -12,6 +12,10 @@ export function NameAndAge() {
   function addOne() {
     return setYear(year + 1);
   }
+
+  useEffect(() => {
+    document.title = name;
+  }, [name]);
 
   return (
     <div>
