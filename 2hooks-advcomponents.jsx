@@ -304,8 +304,8 @@ let jsx;
 if (favoriteNumber !== null) {
   jsx = `My number is ${favoriteNumber}`;
 }
-//short circuiting, will return the last thing inside statement if last statement is true
-//basically saying if there is a value(true) for favoriteNumber continue, if not(false) then it returns
+//short circuiting > will return the last thing inside statement if last statement is true
+//basically saying if there is a value(true) for favoriteNumber continue, if not(false) then it returns last true
 {
   favoriteNumber !== null && `My number is ${favoriteNumber}`;
 }
