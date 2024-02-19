@@ -199,6 +199,7 @@ function App() {
 //getting into the props
 //for the property that goes into the function, it can be destructed to avoid writing props.something all the time
 //this will have same exact output as previous example
+//NEED TO PASS AS OBJECT so can access with dot when calling component
 export function TodoList({ title, subtitle }) {
   return (
     <>

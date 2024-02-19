@@ -7,27 +7,36 @@ import { useEffect, useMemo } from "react";
 if (true) {
   useEffect(() => {}, []);
 }
-//instead can put if statement inside the useEffect hook
+//instead can put if statement inside the useEffect hook or after it
 useEffect(() => {
   if (true) {
     document.title = "hi";
   }
-}, [count]);
+}, [dependency]);
 
-//2.Hooks has to be on the top of the App function component or inside custom hooks
+if (true) {
+  document.title = "hi";
+}
+
+//2.Hooks has to be on the top of the App/Home function component
+//reason is bcs hooks cannot be called conditionally
 function App() {
   //useState, useEffect etc all here on the top
 }
 
+//3.hooks can only be used inside the function component or custom hooks
+
 //-------------------------- 44. UseRef Hook --------------------//
 //useRef hook is able to persist data between different render but not change the value of useState or prop itself, it's just a reference value
-//if our useState or props change, the component will rerender but with props it won't rerender
+//if our useState or props change, the component will rerender but with useRef it won't rerender
 
 //syntax for useRef('default value can be anything')
-//code under is a useRef, "leticia" is the default value and "letiRef" is the object variable to access it
-//all this code is doing is wrapping a particular value and putting inside the "letiRef" object
+
+//code under is a useRef, "leticia" is the default value set and "letiRef" is the object variable to access it
+//all this code is doing is wrapping a particular value and putting inside the "letiRef" object variable
 const letiRef = useRef("leticia");
-//to access the value need to target as object with ".current" key
+const storeRef = useRef(3)
+//to access the value need to target as object with "variable.current" key
 console.log(letiRef); //{current: 'leticia'} returns an object
 console.log(letiRef.current); //leticia
 
@@ -38,9 +47,9 @@ function App() {
   console.log(letiRef.current); //useRef value has been changed
 }
 
-//about next code: even tho value is being changed to Math.randon and useEffect has a console.log of re-render the component will not rerender
+//about next code: even tho value of useRef is being changed to Math.randon and useEffect has a console.log the component will not rerender
 //hook is useful when you want value to be tied to the component but not the rerendering
-function App() {
+export default function Home() {
   const letiRef = useRef("leticia");
 
   useEffect(() => {
@@ -49,6 +58,7 @@ function App() {
 
   return (
     <>
+      {/* on every click the letiRef value will change but component will no rerender */}
       <button
         onClick={() => {
           letiRef.current = Math.random();
@@ -56,26 +66,29 @@ function App() {
       >
         Click to change ref current value
       </button>
+      <br></br>
       <button
         onClick={() => {
           console.log(letiRef.current);
         }}
       >
-        Click to print new Ref
+        Click to log current Ref
       </button>
     </>
   );
 }
 
-//ACCESSING HTML ELEMENT
-//using useRef to get reference from a html element
-//every html element has a "ref" prop
-function App() {
+//ACCESSING HTML DOM ELEMENTS
+//using useRef to get reference from a html element and value of an input
+//every html element has a "ref" prop, If you attach a ref to a DOM element like <input>, <div> etc.
+// React will assign the DOM node to the current property of the ref object once the component mounts.
+export default function Home() {
   const [name, setName] = useState();
   const inputRef = useRef();
 
   useEffect(() => {
-    console.log(inputRef.current); //<input type="text" value="">
+    //<input> is the DOM node, on next render value will be dinamically changing on node too
+    console.log(inputRef.current); //<input type="text" class="bg-blue-500 m-3" value="">
     console.log(inputRef.current.value); //will log value inside input
   }, [name]);
 
@@ -84,11 +97,25 @@ function App() {
       //setting the ref to be "inputRef"
       ref={inputRef}
       type="text"
+      className="bg-blue-500 m-3"
       value={name}
       onChange={(e) => {
         setName(e.target.value);
       }}
     />
+  );
+}
+
+//another example
+function MyComponent() {
+  const inputRef = useRef(null); // when you create a useRef object, it's initialized by default value as null. 
+
+  useEffect(() => {
+    // After component mounts, inputRef.current will hold the reference to the input element
+    console.log(inputRef.current); //  <input>
+  }, []);
+  return (
+    <input ref={inputRef} />
   );
 }
 
@@ -177,6 +204,7 @@ function App() {
 }
 
 //-------------------------- 48. Custom Hooks --------------------//
+//custom hook is a stateful function that will use bjilt-in hooks like useEffect, useCallback etc
 //react knows that any hook will start with "use" in the beggining
 //for custom hoos you can create any name after "use" keyword
 
@@ -221,105 +249,4 @@ function useToogle(initialValue) {
   }
 
   return [value, toogle];
-}
-
-//-------------------------- 55. Form Basics--------------------//
-//-------------------------- 55. Form Basics--------------------//
-//-------------------------- 55. Form Basics--------------------//
-
-function App() {
-  const [inputValue, setInputValue] = useState();
-
-  function preventDefault(e) {
-    // the onSubmit function called need to have the e.preventDefault() declared
-    e.preventDefault();
-  }
-
-  return (
-    <>
-      {/* if using a form need to declare onSubmit={function here} */}
-      <form onSubmit={preventDefault} id="new-form">
-        <label htmlFor="name">Name: </label>
-        <input
-          type="text"
-          id="name"
-          value={inputValue}
-          placeholder="Full Name"
-          onChange={(e) => setInputValue(e.target.value)}
-        />
-        <br />
-        <br />
-
-        {/* selecting the default value of options  <select value="2"> cannot change to another number*/}
-        {/* to be uncontrolled the value cannot be changed, known declared as defaultValue="2" */}
-        <label htmlFor="pick">Pick a number: </label>
-        <select id="pick">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
-        <br />
-        <br />
-        <textarea
-          placeholder="I am the placeholder of textarea"
-          rows="3"
-        ></textarea>
-        <br />
-        <br />
-        {/* Defaultchecked will make checkbox already checked on load*/}
-        <input id="agree" type="checkbox" defaultChecked />
-        <label htmlFor="agree">Agree with conditions</label>
-        <br />
-        <br />
-        <button>Add Todo</button>
-      </form>
-    </>
-  );
-}
-
-//-------------------------- 56. One way Data Flow--------------------//
-//one way data flow =  data can only flow from parent to children and not the other way around
-
-//https://courses.webdevsimplified.com/view/courses/react-simplified-beginner/1764773-forms/5836245-56-one-way-data-flow
-
-//-------------------------- 57. useState vs useRef--------------------//
-//use case to use Ref instead of State
-
-function App() {
-  const nameRef = useRef();
-  // const [name, setName] = useState("");
-
-  //component is rerendering everytime the input changes and we don't need that
-  useEffect(() => {
-    console.log("render");
-  });
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    const name = nameRef.current.value;
-    if (name === "") return;
-
-    alert(`Name: ${name}`);
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="name"> Name: </label>
-      <br />
-      {/* uncontrolled input with useRef, wont cause component to rerender everytime */}
-      <input type="text" ref={nameRef} id="name" />
-      {/* controlled input causing component to rerender */}
-      {/* <input
-        type="text"
-        id="name"
-        value={name}
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-      /> */}
-      <br />
-      <br />
-      <button>Alert Name</button>
-    </form>
-  );
 }

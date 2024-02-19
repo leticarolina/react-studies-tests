@@ -2,53 +2,23 @@
 import { TodoComponent } from "@/components/TodoComponent";
 import { UserList } from "@/components/UserList";
 //1. import hook
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function Home() {
-  const [todo, setTodo] = useState([]);
+  const letiRef = useRef("leticia");
 
-  function AddNewTodo() {
-    setTodo((current) => [
-      ...current,
-      { name: "Vvv", id: crypto.randomUUID() },
-    ]);
-  }
+  useEffect(() => {
+    console.log("Re-rendered"); //only on mount
+  });
 
-  function deleteTodo(id) {
-    setTodo((current) => {
-      current.filter((t) => {
-        return t != id;
-      });
-    });
-  }
   return (
-    <>
-      <ul id="list">
-        {todo != null &&
-          todo.map((task) => {
-            return (
-              <TodoComponent
-                key={task.name}
-                todo={task.name}
-                deleteTodo={deleteTodo(task.id)}
-              />
-            );
-          })}
-      </ul>
-      <br></br>
-
-      <div id="new-todo-form">
-        <label htmlFor="todo-input">New Todo</label>
-        <input
-          type="text"
-          id="todo-input"
-          value={todo}
-          onChange={(e) => {
-            setTodo(e.target.value);
-          }}
-        />
-        <button onClick={AddNewTodo}>Add Todo</button>
-      </div>
-    </>
+    <button
+      onClick={() => {
+        letiRef.current = Math.random();
+        console.log(letiRef.current);
+      }}
+    >
+      change ref value
+    </button>
   );
 }
