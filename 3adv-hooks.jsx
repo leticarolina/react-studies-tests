@@ -107,25 +107,25 @@ export default function Home() {
 }
 
 //another example
-function MyComponent() {
-  const inputRef = useRef(null); // when you create a useRef object, it's initialized by default value as null. 
+export default function Home() {
+  const inputRef = useRef(null); // when you create a useRef object, it's initialized with an null initial value by default.
+  //useRef is not available until after the component mount 
 
   useEffect(() => {
     // After component mounts, inputRef.current will hold the reference to the input element
-    console.log(inputRef.current); //  <input>
+    console.log(inputRef.current); //  <input  />
+    inputRef.current.focus(); //will automatically give focus to  the input on mount
   }, []);
-  return (
-    <input ref={inputRef} />
-  );
+  return <input ref={inputRef} />;
 }
 
 //-------------------------- 45. UseMemo Hook --------------------//
-//syntax
+//syntax similar to useEffect but need to declare as variable
 const variable = useMemo(() => {
   //code to run if dependency array has changed
 }, [dependencyArray]);
 
-//this is for performance gains and is all about memoization
+//this is a hook for performance gains and is all about memoization
 //The useMemo Hook only runs when one of its dependencies update.
 
 //1. Memoization
@@ -140,8 +140,10 @@ function App() {
   const [count, setCount] = useState(0);
 
   // A function that doubles the count value (pretend its slow)
+  //whateber we return from this function will be the value of variable 'doubleCount'
   const doubleCount = useMemo(() => {
     console.log("Recalculating doubleCount...");
+    //in case some slow code here makes sense to use useMemo, otherwise just set vatiable normally
     return count * 2;
   }, [count]); // Dependency: 'count'
 
@@ -149,7 +151,7 @@ function App() {
     <div>
       <p>Count: {count}</p>
       <p>Double the count (memoized): {doubleCount}</p>
-      {/* when button is clicked the count will add +1 and since count changed, the useMemo will run too  */}
+      {/* when button is clicked the count will add +1 and since count changed, the useMemo will run too */}
       <button onClick={() => setCount(count + 1)}>Increment Count</button>
     </div>
   );
@@ -202,6 +204,10 @@ function App() {
     </>
   );
 }
+
+//The useCallback hook does not rerun your function when your dependencies changes.
+// All it does is create a brand new function when the dependencies change. 
+//If the dependencies don't change it will just return the same function as last time useCallback was called. 
 
 //-------------------------- 48. Custom Hooks --------------------//
 //custom hook is a stateful function that will use bjilt-in hooks like useEffect, useCallback etc
