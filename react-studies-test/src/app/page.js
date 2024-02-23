@@ -1,56 +1,40 @@
 "use client"; // This is a client component  👈🏽
 import { useFetch } from "@/hooks/useFetch";
+import { useArray } from "@/hooks/useArray";
 //1. import hook
 import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 
-const URLS = {
-  USERS: "https://jsonplaceholder.typicode.com/usersddd",
-  POSTS: "https://jsonplaceholder.typicode.com/posts",
-  COMMENTS: "https://jsonplaceholder.typicode.com/comments",
-};
+const INITIAL_ARRAY = [1, 2, 3];
+// const INITIAL_ARRAY = () => [1, 2, 3]
 
 export default function Home() {
-  //creating a useState to store the urls, on input click the url will change
-  const [url, setUrl] = useState(URLS.USERS);
-
-  //calling the hook on main file, all these values are the ones custom hook will return
-  const { data, isLoading, isError } = useFetch(url);
+  const { array, set, push, replace, filter, remove, clear, reset } =
+    useArray(INITIAL_ARRAY);
 
   return (
     <>
-      <div>
-        <label>
-          <input
-            type="radio"
-            checked={url === URLS.USERS}
-            onChange={() => setUrl(URLS.USERS)}
-          />
-          Users
-        </label>
-        <label>
-          <input
-            type="radio"
-            checked={url === URLS.POSTS}
-            onChange={() => setUrl(URLS.POSTS)}
-          />
-          Posts
-        </label>
-        <label>
-          <input
-            type="radio"
-            checked={url === URLS.COMMENTS}
-            onChange={() => setUrl(URLS.COMMENTS)}
-          />
-          Comments
-        </label>
+      <div>{array.join(", ")}</div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: ".5rem",
+          alignItems: "flex-start",
+          marginTop: "1rem",
+        }}
+      >
+        <button onClick={() => set([4, 5, 6])}>Set to [4, 5, 6]</button>
+        <button onClick={() => push(4)}>Push 4</button>
+        <button onClick={() => replace(1, 9)}>
+          Replace the second element with 9
+        </button>
+        <button onClick={() => filter((n) => n < 3)}>
+          Keep numbers less than 3
+        </button>
+        <button onClick={() => remove(1)}>Remove second element</button>
+        <button onClick={clear}>Clear</button>
+        <button onClick={reset}>Reset</button>
       </div>
-      {isLoading ? (
-        <h1>Loading...</h1>
-      ) : isError ? (
-        <h1>Error Fail to Fetch</h1>
-      ) : (
-        <div>{JSON.stringify(data, null, 2)}</div>
-      )}
     </>
   );
 }
