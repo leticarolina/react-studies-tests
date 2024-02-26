@@ -11,33 +11,76 @@ export function useArray(INITIAL_ARRAY) {
     setArray((currentArray) => [...currentArray, number]);
   }, []);
 
-  function replace(index, replacer) {
+  const replace = useCallback((index, replacer) => {
     setArray((currentArray) => {
-      currentArray.map((element) => {
-        element[index] = replacer;
-        return element;
-      });
+      return [
+        ...currentArray.slice(0, index),
+        replacer,
+        ...currentArray.slice(index + 1),
+      ];
     });
-  }
-  function filter(callback) {
+  }, []);
+
+  const filter = useCallback((callback) => {
     setArray((currentArray) => {
       return currentArray.filter(callback);
     });
-  }
+  });
 
-  function remove(index) {
+  const remove = useCallback((index) => {
     setArray((currentArray) => {
-      return currentArray[index].remove();
+      return [
+        ...currentArray.slice(0, index),
+        ...currentArray.slice(index + 1),
+      ];
     });
-  }
+  });
 
-  function clear() {
+  const clear = useCallback(() => {
     setArray([]);
-  }
+  });
 
-  function reset() {
+  const reset = useCallback(() => {
     setArray(INITIAL_ARRAY);
-  }
+  });
 
   return { array, set, push, replace, filter, remove, clear, reset };
+}
+
+//code on main file
+//code on main file
+//code on main file
+
+const INITIAL_ARRAY = [1, 2, 3];
+
+export default function Home() {
+  const { array, set, push, replace, filter, remove, clear, reset } =
+    useArray(INITIAL_ARRAY);
+
+  return (
+    <>
+      <div>{array.join(", ")}</div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: ".5rem",
+          alignItems: "flex-start",
+          marginTop: "1rem",
+        }}
+      >
+        <button onClick={() => set([4, 5, 6])}>Set to [4, 5, 6]</button>
+        <button onClick={() => push(4)}>Push 4</button>
+        <button onClick={() => replace(1, 9)}>
+          Replace the second element with 9
+        </button>
+        <button onClick={() => filter((n) => n < 3)}>
+          Keep numbers less than 3
+        </button>
+        <button onClick={() => remove(1)}>Remove second element</button>
+        <button onClick={clear}>Clear</button>
+        <button onClick={reset}>Reset</button>
+      </div>
+    </>
+  );
 }

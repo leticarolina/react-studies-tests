@@ -1,40 +1,59 @@
 "use client"; // This is a client component  👈🏽
-import { useFetch } from "@/hooks/useFetch";
-import { useArray } from "@/hooks/useArray";
-//1. import hook
 import { useEffect, useState, useRef, useMemo, useCallback } from "react";
-
-const INITIAL_ARRAY = [1, 2, 3];
-// const INITIAL_ARRAY = () => [1, 2, 3]
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function Home() {
-  const { array, set, push, replace, filter, remove, clear, reset } =
-    useArray(INITIAL_ARRAY);
+  const [firstName, setFirstName] = useLocalStorage("FIRST_NAME", "");
+
+  // Bonus:
+  // const [lastName, setLastName] = useLocalStorage("LAST_NAME", () => {
+  //   return "Default"
+  // })
+
+  // Bonus:
+  const [hobbies, setHobbies] = useLocalStorage("HOBBIES", [
+    "Programming",
+    "Weight Lifting",
+  ]);
 
   return (
     <>
-      <div>{array.join(", ")}</div>
-      <div
+      <div>
+        <label>First Name</label>
+        <input
+          className="bg-blue-400"
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+      </div>
+
+      {/* Bonus: */}
+      {/* <div
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: ".5rem",
           alignItems: "flex-start",
-          marginTop: "1rem",
+          marginBottom: "1rem",
         }}
       >
-        <button onClick={() => set([4, 5, 6])}>Set to [4, 5, 6]</button>
-        <button onClick={() => push(4)}>Push 4</button>
-        <button onClick={() => replace(1, 9)}>
-          Replace the second element with 9
-        </button>
-        <button onClick={() => filter((n) => n < 3)}>
-          Keep numbers less than 3
-        </button>
-        <button onClick={() => remove(1)}>Remove second element</button>
-        <button onClick={clear}>Clear</button>
-        <button onClick={reset}>Reset</button>
-      </div>
+        <label>Last Name</label>
+        <input
+          type="text"
+          value={lastName}
+          onChange={e => setLastName(e.target.value)}
+        />
+      </div> */}
+
+      {/* Bonus: */}
+      <div>{hobbies.join(", ")}</div>
+      <button
+        onClick={() =>
+          setHobbies((currentHobbies) => [...currentHobbies, "New Hobby"])
+        }
+      >
+        Add Hobby
+      </button>
     </>
   );
 }
