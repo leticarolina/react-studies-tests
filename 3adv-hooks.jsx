@@ -205,14 +205,30 @@ function App() {
   );
 }
 
+//another example 
+export default function Home() {
+  const [count, setCount] = useState(0);
+
+  const handleClick = useCallback(() => {
+    setCount(count + 1);
+  }, [count]);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={handleClick}>Increment</button>
+    </div>
+  );
+}
+
 //The useCallback hook does not rerun your function when your dependencies changes.
 // All it does is create a brand new function when the dependencies change. 
 //If the dependencies don't change it will just return the same function as last time useCallback was called. 
 
 //-------------------------- 48. Custom Hooks --------------------//
-//custom hook is a stateful function that will use bjilt-in hooks like useEffect, useCallback etc
+//custom hook is just a function that will use built-in hooks like useEffect, useCallback etc
 //react knows that any hook will start with "use" in the beggining
-//for custom hoos you can create any name after "use" keyword
+//for custom hooks you can create any name after "use" keyword
 
 function App() {
   //the value here is useInputValue the function
@@ -239,6 +255,7 @@ function App() {
   );
 }
 
+//Custom Hook 
 function useInputValue(initialValue) {
   const [value, setValue] = useState(initialValue);
   return {
@@ -246,6 +263,8 @@ function useInputValue(initialValue) {
     onChange: (e) => setValue(e.target.value),
   };
 }
+
+//custom hook
 function useToogle(initialValue) {
   const [value, setValue] = useState(initialValue);
 
@@ -256,3 +275,64 @@ function useToogle(initialValue) {
 
   return [value, toogle];
 }
+
+// The difference between returning values from custom hooks as an object or an array.
+
+//object
+// Readability: Returning values as an object allows for more descriptive naming of the returned values, making it easier to understand the purpose of each value.
+// Flexibility: Adding new values in the future is straightforward, as you can simply include them as additional properties in the returned object without affecting existing code.
+// Destructuring: When consuming the custom hook, you can destructure the returned object easily, which can improve code readability.
+
+//arrray
+// Index-based Access: Returning values as an array may require consuming components to rely on index-based access to retrieve the desired values. This can lead to less readable code, especially when dealing with multiple values.
+// Order Dependency: The order in which values are returned matters when using an array. Changing the order of returned values would require updating all consuming components to reflect the new order.
+// No Descriptive Naming: With an array, the values are accessed based on their positions, which can make it harder to understand the purpose of each value without referring back to the custom hook implementation.
+
+//returning values as an object from custom hooks is generally preferred due to its advantages in readability, flexibility, and ease of use. 
+
+//-------------------------- 62. UseReducer Hook --------------------//
+//hook to manage complex state logic in functional components.
+// similar to 'usestate' but useful when managing state that involves multiple sub-values or when the next state depends on the previous one. 
+
+//how useReducer works:
+
+// You start by defining an initial state value, it can be a single value or an object representing the initial state of your component.
+const initialState = {
+  count: 0
+};
+
+// Then define Reducer function, this is responsible for updating the state based on the dispatched actions
+//this here is just an arrow function with switch logic inside, can also be normal function
+const reducer = (state, action) => {
+  //typically switch on 'action.type' to determine which action is being dispatched 
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + 1 };
+    case 'decrement':
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+};
+
+// CODE ON MAIN FILE / Component
+// CODE ON MAIN FILE / Component
+function Counter() {
+  // useReducer returns the current state and a dispatch function
+  //this is a destructing assignment,state will hold the current state value, dispatch: This variable represents a function that you can call to dispatch actions to update the state.
+  const [state, dispatch] = useReducer(reducer, initialState);
+  // this lone above says "Call 'useReducer' with the provided reducer function and initialState, and then assign the first value returned by 'useReducer' to state and the second value to dispatch."
+
+  return (
+    <div>
+      <h2>Count: {state.count}</h2>
+      {/* The dispatch function internally calls the 'reducer' with the current state and the action object as arguments.  */}
+      {/* on dispatch({ type: 'increment' }), the 'reducer' function receives the current state as the first argument and the action object for the second prop */}
+      <button onClick={() => dispatch({ type: 'increment' })}>Increment</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>Decrement</button>
+    </div>
+  );
+}
+
+//USE REDUCER CODE EXAMPLE FROM KYLE
+//check src/components/CounterReducer.jsx
