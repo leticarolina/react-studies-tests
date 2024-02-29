@@ -61,7 +61,9 @@ export function CounterReducer({ initialCount = 0 }) {
         Reset
       </button>
       <button
-        // standart way to handle the dispatch function,declare type for the action and payload for aditional data,here I declared the value will in another object
+        // standart way to handle the dispatch function,declare type for the action and payload for aditional data.
+        //here I created another object just for the payload, This is personal preference.
+        //Many times the payload is much more complex so having it separated from the rest of the data you pass down makes it easier to see what is used for what.
         onClick={() => {
           dispatch({ type: "ADD5", payload: { value: 5 } });
         }}
