@@ -336,3 +336,30 @@ function Counter() {
 
 //USE REDUCER CODE EXAMPLE FROM KYLE
 //check src/components/CounterReducer.jsx
+
+//-------------------------- 63. UseContext Hook --------------------//
+//prop drilling = nesting props across others components in order to the inner component ges access to it.
+//some of these components wont even use the prop, will only be a bridge
+//use contaxt hook is useful to fixt that
+
+//1 first import the hook to create a context 
+import { createContext } from "react";
+//2 cresate a export variable outside main App functio  to store hook (VARIABLE MUST START WITH CAPITAL LETTER)
+export const ThemeContext = createContext();
+//3 wrap all the code on main app that has the component and will need to access the props inside <VariableTag> </ VariableTag>
+<ThemeContext.Consumer value={'this value will usually be an object with whatever u wanna pass along in your context'}>
+<h1>.Consumer because we will consume the props and use them here</h1>
+<div>Lets suppose there is a component here that has another component inside and this nested component will need to access props from here</div>
+</ThemeContext.Consumer>
+//4 In the nested component the one that will actually use the props, import the USECONTEXT (endlich using the hook) and the variable
+import { useContext } from "react";
+import {ThemeContext} from "./App"
+//5 In this same nested componet call the useContext hook with the context variable created
+//can create a variable then access as variable.PropName or destruct and access it directly as the original prop name passed
+const accssContext = useContext(ThemeContext)
+const {destructing, objects, passed} =  useContext(ThemeContext)
+//6 this one line is what give access to a;; the props can declare inside any component that will need to use the props.
+
+//TIP: try to only use with states that will be needed in many components on only on a really nested component
+// or inside a section that will be using an specif state between components
+
