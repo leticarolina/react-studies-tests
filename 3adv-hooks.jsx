@@ -383,9 +383,31 @@ const {destructing, objects, passed} =  useContext(ThemeContext)
 //2.determine the .Provider
 //3. go to nested component and import hook + context 
 
-//-------------------------- 64. UseContext Hook --------------------//
+//-------------------------- 65. Local state is Beste --------------------//
+//basically try to store usestate as local as possible on your component to avoid props drilling.
 
+//-------------------------- 66. Never store derived state --------------------//
+//Derived state refers to any state that can be calculated or derived from other state values. 
+//While it may seem convenient to compute and store derived state alongside regular state, there are several reasons why this practice is not good.
+//it's recommended to compute derived values dynamically within the component's render method or using memoization techniques like useMemo or useCallback. 
 
+const [users, setUsers] = useSatate([
+  {id: 1, name: 'leticia'},
+  {id: 2, name:'fernanda'}
+])
 
+//code example NOT using derived state (reccommended)
+const [selectedUserID, setSelectedUserID] = useSatate()
+const selectedUser = users.find(user => user.id === selectedUserID);
 
+function select (id) {
+  setSelectedUserID(id)
+}
 
+//code USING derived state to get selected user (derived from all users)
+// const [selectedUser,setSelectedUser] = useState();
+
+// function select (id) {
+//   const user = users.find(user => user.id === id)
+//   selectedUser(user) 
+// }
