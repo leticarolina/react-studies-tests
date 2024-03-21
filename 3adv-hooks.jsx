@@ -1,7 +1,7 @@
 //-------------------------- 43. HOOK RULES --------------------//
 
 import { array } from "prop-types";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useReducer } from "react";
 
 //1. hooks canNOT be called conditionally or inside any if statements, for loop, blocks etc
 if (true) {
@@ -295,13 +295,12 @@ function useToogle(initialValue) {
 // similar to 'usestate' but useful when managing state that involves multiple sub-values or when the next state depends on the previous one. 
 
 //how useReducer works:
+//1. You start by defining an initial state value, it can be a single value or an object representing the initial state of your component.
+// const initialState = {
+//   count: 0
+// };
 
-// You start by defining an initial state value, it can be a single value or an object representing the initial state of your component.
-const initialState = {
-  count: 0
-};
-
-// Then define Reducer function, this is responsible for updating the state based on the dispatched actions
+//2. Then define Reducer function, this is responsible for updating the state based on the dispatched actions
 //this here is just an arrow function with switch logic inside, can also be normal function
 const reducer = (state, action) => {
   //typically switch on 'action.type' to determine which action is being dispatched 
@@ -334,32 +333,59 @@ function Counter() {
   );
 }
 
+//steps for using useREDUCER
+//1. define initial state
+const initialState = { count: 0 };
+//2. Create Reducer Function
+function reducer (state, action) {
+  switch (action.type) {
+    case 'increment':
+      return state + 1;
+  }
+}
+//3. create a variable for the UseReducer hook
+const [count, dispatch] = useReducer(reducer, initialState)
+//4. dispatch the actions created on reducer function
+{<button onClick={() => {dispatch( {type: 'increment'})} }> + </button>}
+
 //USE REDUCER CODE EXAMPLE FROM KYLE
 //check src/components/CounterReducer.jsx
 
 //-------------------------- 63. UseContext Hook --------------------//
-//prop drilling = nesting props across others components in order to the inner component ges access to it.
+//props drilling = nesting props across others components in order to the inner component get access to it.
 //some of these components wont even use the prop, will only be a bridge
-//use contaxt hook is useful to fixt that
+//use context hook is useful to fixt that
 
 //1 first import the hook to create a context 
 import { createContext } from "react";
-//2 cresate a export variable outside main App functio  to store hook (VARIABLE MUST START WITH CAPITAL LETTER)
+//2 You start by creating a context, so create a export variable outside main App function to store hook (VARIABLE MUST START WITH CAPITAL LETTER)
 export const ThemeContext = createContext();
-//3 wrap all the code on main app that has the component and will need to access the props inside <VariableTag> </ VariableTag>
-<ThemeContext.Consumer value={'this value will usually be an object with whatever u wanna pass along in your context'}>
-<h1>.Consumer because we will consume the props and use them here</h1>
+//3 wrap all the code on main App that has the component and will need to access the props inside <VariableTag> </ VariableTag>
+<ThemeContext.Provider value={'this value will usually be an object with whatever u wanna pass along in your context'}>
+<h1>The Provider component is responsible for providing the context value to its descendant components. It accepts a value prop, which is the value that will be passed down the component tree to all descendants that are Consumers.
+Typically, you wrap the root of your application or a specific part of your component tree with a Provider to make the context value available to all components within that subtree.</h1>
 <div>Lets suppose there is a component here that has another component inside and this nested component will need to access props from here</div>
-</ThemeContext.Consumer>
-//4 In the nested component the one that will actually use the props, import the USECONTEXT (endlich using the hook) and the variable
+</ThemeContext.Provider>
+//4 In the nested component the one that will actually use the props, import the USECONTEXT and the variable
 import { useContext } from "react";
 import {ThemeContext} from "./App"
-//5 In this same nested componet call the useContext hook with the context variable created
+//5 In this same nested componet call the useContext hook with the context variable created (endlich using the hook)
 //can create a variable then access as variable.PropName or destruct and access it directly as the original prop name passed
-const accssContext = useContext(ThemeContext)
+const accssContext = useContext(ThemeContext) 
 const {destructing, objects, passed} =  useContext(ThemeContext)
 //6 this one line is what give access to a;; the props can declare inside any component that will need to use the props.
 
 //TIP: try to only use with states that will be needed in many components on only on a really nested component
-// or inside a section that will be using an specif state between components
+// or inside a section that will be using an specific state between components
+
+//STEPS FOR USING USECONTEXT
+//1.create a context variable
+//2.determine the .Provider
+//3. go to nested component and import hook + context 
+
+//-------------------------- 64. UseContext Hook --------------------//
+
+
+
+
 
