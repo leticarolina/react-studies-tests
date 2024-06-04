@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import { createBrowserRouter } from "react-router-dom";
 import { About } from "./About";
 import Home from "./page";
