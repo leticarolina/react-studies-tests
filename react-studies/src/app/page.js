@@ -1,24 +1,27 @@
 "use client";
 import { useRef, useState } from "react";
 import { CustomModal } from "@/components/CustomModal";
-import { PortalsAlertMessage } from "@/components/PortalsAlertMessage";
-import Image from "next/image";
-import { CustomFowardRefComponent } from "@/components/CustomFowardRefComponent";
 
 export default function Home() {
-  //ref is used when you want to store data but dont cause the component to re-render all the time
-  //but if the ref will be in a component, Function components cannot be given refs unless with React.forwardRef()
-  const inputRef = useRef();
+  const [isOpen, setIsOpen] = useState(false);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    console.log(inputRef.current.value);
+  function onClose() {
+    setIsOpen(false);
   }
   return (
-    <form onSubmit={handleSubmit}>
-      <CustomFowardRefComponent ref={inputRef}></CustomFowardRefComponent>
-      <button type="submit">SUBMIT</button>
-    </form>
+    <div>
+      <button
+        data-custom-open
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
+        Show Custom Modal
+      </button>
+      <br />
+      <button data-dialog-open>Show Dialog Modal</button>
+      <div className="modal-overlay"></div>
+      <CustomModal isOpen={isOpen} onClose={onClose}></CustomModal>
+    </div>
   );
 }
