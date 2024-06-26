@@ -51,3 +51,28 @@ export function CustomModal({ children, isOpen, onClose }) {
     container
   );
 }
+
+//on the main app js
+export default function Home() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  function onClose() {
+    setIsOpen(false);
+  }
+  return (
+    <div>
+      <button
+        data-custom-open
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
+        Show Custom Modal
+      </button>
+      <br />
+      <button data-dialog-open>Show Dialog Modal</button>
+      <div className="modal-overlay"></div>
+      <CustomModal isOpen={isOpen} onClose={onClose}></CustomModal>
+    </div>
+  );
+}
